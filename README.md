@@ -4,11 +4,21 @@
 
 ---
 
+## 🌐 Live Deployments & Application Links
+
+* **Live Demo URL:** [https://odd-boxes-show.loca.lt](https://odd-boxes-show.loca.lt) *(If prompted for Tunnel Password, enter: `157.50.181.255`)*
+* **GitHub Repository:** [https://github.com/amrutha146/MST-Buildathon](https://github.com/amrutha146/MST-Buildathon)
+* **1-Click Cloud Deployment (Vercel):** [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Famrutha146%2FMST-Buildathon&root-directory=frontend)
+* **Localhost:** [http://localhost:3000](http://localhost:3000)
+
+---
+
 ## 🏆 Verified MST Testnet Deployment
 
 * **Contract Address:** [`0xD86D80641E43a3055BFABC7A0435023E870cF651`](https://mstscan.com/address/0xD86D80641E43a3055BFABC7A0435023E870cF651)
 * **Contract Deployment Tx Hash:** [`0x742eb6483d29a3ca7ab2cae3032916a7d45a5e81df84607d9aba50961848c618`](https://mstscan.com/tx/0x742eb6483d29a3ca7ab2cae3032916a7d45a5e81df84607d9aba50961848c618)
-* **First On-Chain Functional Tx (`registerRecord`):** [`0x1b1ebbab88d223d0f15a8ebb7e0ea427bae7922a90e37bf0f787c276a287fb0b`](https://mstscan.com/tx/0x1b1ebbab88d223d0f15a8ebb7e0ea427bae7922a90e37bf0f787c276a287fb0b)
+* **Genesis Record Registration Tx (`registerRecord`):** [`0x1b1ebbab88d223d0f15a8ebb7e0ea427bae7922a90e37bf0f787c276a287fb0b`](https://mstscan.com/tx/0x1b1ebbab88d223d0f15a8ebb7e0ea427bae7922a90e37bf0f787c276a287fb0b)
+* **Provider Authorization Tx (`authorizeProvider`):** [`0xc5ec0fb9bce22ed85419443ca90bf084b2a47c8ef50466eaaefc3e9c13958bb5`](https://mstscan.com/tx/0xc5ec0fb9bce22ed85419443ca90bf084b2a47c8ef50466eaaefc3e9c13958bb5)
 * **Network Name:** MST Testnet
 * **Chain ID:** `91562037` (`0x5752c35`)
 * **RPC Endpoint:** `https://testnetrpc.mstblockchain.com`
@@ -26,11 +36,42 @@ Modern health record systems either lock patient data into proprietary hospital 
 * **Patient-Controlled Time-Decay Grants:** Patients explicitly approve or reject access requests from healthcare providers with custom validity windows (e.g., 1 hour, 24 hours). Expiry is mathematically enforced on-chain via `block.timestamp < expiryTimestamp`.
 * **Tamper-Evident Access Audit:** Every time a health record is decrypted or accessed by an authorized provider, an immutable on-chain event (`AccessLogged`) is emitted.
 * **Gated AI Clinical Assistant:** An integrated clinical summary agent is cryptographically restricted from analyzing records unless an active on-chain consent grant is verified (`hasAccess() == true`).
-* **Break-Glass Emergency Protocol:** Emergency ER physicians can trigger break-glass access with an irreversible, high-priority on-chain audit event and a strict 4-hour validity limit.
+* **Centralized BridgeKey Wallet Architecture:** One root `WalletProvider` handles connection state once per session with silent session recovery (`eth_accounts`), single-flight concurrency locking, and persistent role-based routing.
 
 ---
 
-## 🏗️ Architecture & Interaction Flow
+## 🧭 Application Structure & Navigation Flow
+
+```
+                    MEDICHAIN (/)
+                         |
+           ┌─────────────┼─────────────┐
+           |             |             |
+        PATIENT       HOSPITAL       ADMIN
+           |             |             |
+     /login/patient /login/hospital /login/admin
+           |             |             |
+        Connect       Connect       Passkey
+       BridgeKey     BridgeKey    (DEMO Mode)
+           |             |             |
+           ↓             ↓             ↓
+       /patient      /hospital      /admin
+      (Dashboard)   (Dashboard)   (Dashboard)
+```
+
+| Route | Purpose | Role Gating |
+| :--- | :--- | :--- |
+| **`/`** | Landing Page | Public |
+| **`/login/patient`** | Patient Authentication | BridgeKey Wallet |
+| **`/login/hospital`** | Institutional Hospital Login | BridgeKey Authorized Node |
+| **`/login/admin`** | Administrator Governance Login | Demo Passkey (`MEDICHAIN-ADMIN-2026`) |
+| **`/patient`** | Patient Sovereign Vault | Role: `patient` |
+| **`/hospital`** | Hospital / Healthcare Provider Terminal | Role: `hospital` |
+| **`/admin`** | Governance, Audit & Network Telemetry | Role: `admin` |
+
+---
+
+## 🏗️ Technical Architecture & Cryptographic Flow
 
 ```
 ┌────────────────┐           ┌───────────────────┐           ┌───────────────────┐
@@ -53,30 +94,6 @@ Modern health record systems either lock patient data into proprietary hospital 
         │                              │ 5. Gated Decrypt & View       │
         │                              │──────────────────────────────►│ logAccess() [Audit]
         │                              │                               │
-```
-
----
-
-## 📁 Repository Structure
-
-```
-.
-├── contracts/               # Hardhat EVM development environment
-│   ├── contracts/           # MedicalConsent.sol
-│   ├── scripts/             # deploy.js & test-interact.js
-│   ├── test/                # 16 automated unit tests
-│   └── hardhat.config.js    # MST Testnet network configuration
-├── frontend/                # Next.js 14 + Tailwind CSS + Ethers.js app
-│   ├── src/
-│   │   ├── app/             # Next.js App router & API routes
-│   │   │   ├── api/records/upload/     # AES-256 encryption & storage
-│   │   │   ├── api/records/[id]/access # Gated decryption via MST hasAccess()
-│   │   │   └── api/records/[id]/summary# Gated AI clinical summary
-│   │   ├── components/      # Navbar, PatientDashboard, ProviderPortal, AuditTimeline
-│   │   └── lib/             # crypto.ts, mst.ts, contractAddress.json, ABI
-│   └── package.json
-├── sample-data/             # Synthetic clinical test records (sample_blood_report.txt)
-└── README.md
 ```
 
 ---
