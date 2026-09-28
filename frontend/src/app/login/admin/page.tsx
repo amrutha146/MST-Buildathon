@@ -11,7 +11,6 @@ import {
   ArrowRight,
   ArrowLeft,
   AlertCircle,
-  Info,
   CheckCircle2,
 } from "lucide-react";
 
@@ -83,14 +82,6 @@ export default function AdminLoginPage() {
             </p>
           </div>
 
-          {/* Hackathon Demo Notice */}
-          <div className="mb-6 p-3 bg-amber-950/40 border border-amber-800/50 rounded-xl text-amber-300 text-xs flex items-start gap-2.5">
-            <Info className="w-4 h-4 mt-0.5 shrink-0 text-amber-400" />
-            <div className="text-[11px] leading-relaxed">
-              <span className="font-bold">Hackathon Demo Mode:</span> This demo authentication provides administrative visibility for evaluation purposes. In production, this is gated by multi-signature threshold cryptography (Gnosis Safe / Timelock).
-            </div>
-          </div>
-
           {/* Error Message */}
           {error && (
             <div className="mb-6 p-3.5 bg-rose-950/60 border border-rose-800/60 rounded-xl text-rose-300 text-xs flex items-start gap-2.5">
@@ -125,7 +116,7 @@ export default function AdminLoginPage() {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                  Admin Passkey (Demo)
+                  Admin Passkey
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
@@ -141,7 +132,7 @@ export default function AdminLoginPage() {
                   />
                 </div>
                 <p className="text-[10px] text-slate-500 mt-1">
-                  Default Demo Key: <code className="text-amber-400 font-mono">MEDICHAIN-ADMIN-2026</code>
+                  Access Key: <code className="text-amber-400 font-mono">MEDICHAIN-ADMIN-2026</code>
                 </p>
               </div>
 

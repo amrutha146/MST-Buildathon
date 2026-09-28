@@ -175,8 +175,8 @@ export default function AdminDashboard() {
 
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-800 rounded-xl text-xs font-mono text-amber-300 border border-slate-700">
-              <div className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
-              <span>Admin: DEMO MODE</span>
+              <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span>Admin: Active Session</span>
             </div>
 
             <button
