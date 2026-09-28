@@ -6,7 +6,7 @@
 
 ## 🌐 Live Deployments & Application Links
 
-* **Live Demo URL:** [https://odd-boxes-show.loca.lt](https://odd-boxes-show.loca.lt) *(If prompted for Tunnel Password, enter: `157.50.181.255`)*
+* **Live Demo URL:** [https://tribes-formatting-write-tap.trycloudflare.com](https://tribes-formatting-write-tap.trycloudflare.com) *(Instant Cloudflare Edge Deployment &bull; No Password Needed)*
 * **GitHub Repository:** [https://github.com/amrutha146/MST-Buildathon](https://github.com/amrutha146/MST-Buildathon)
 * **1-Click Cloud Deployment (Vercel):** [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Famrutha146%2FMST-Buildathon&root-directory=frontend)
 * **Localhost:** [http://localhost:3000](http://localhost:3000)
