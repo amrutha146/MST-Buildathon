@@ -6,21 +6,16 @@ import { useWallet } from "@/context/WalletContext";
 import { getContractAddress, MST_TESTNET_CONFIG } from "@/lib/mst";
 import {
   ShieldAlert,
-  ShieldCheck,
   Building2,
-  Users,
   FileText,
   Activity,
   CheckCircle2,
-  AlertTriangle,
   ExternalLink,
   LogOut,
-  RefreshCw,
   Server,
   Database,
   Lock,
   Clock,
-  Check,
   XCircle,
 } from "lucide-react";
 
@@ -145,9 +140,9 @@ export default function AdminDashboard() {
 
   if (!isInitialized || !isAuthenticated) {
     return (
-      <div className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center">
-        <div className="flex items-center gap-3 text-sm text-slate-400">
-          <Activity className="w-5 h-5 animate-spin text-amber-400" />
+      <div className="min-h-screen bg-slate-50 text-slate-900 flex items-center justify-center">
+        <div className="flex items-center gap-3 text-sm text-slate-500">
+          <Activity className="w-5 h-5 animate-spin text-amber-600" />
           <span>Verifying administrator privileges...</span>
         </div>
       </div>
@@ -155,33 +150,33 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-amber-500 selection:text-white">
+    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans selection:bg-amber-600 selection:text-white">
       {/* Header */}
-      <header className="bg-slate-900 border-b border-slate-800 sticky top-0 z-40">
+      <header className="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
         <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-amber-600 text-white flex items-center justify-center font-bold shadow-md shadow-amber-600/20">
               <ShieldAlert className="w-5 h-5" />
             </div>
             <div>
-              <span className="font-bold text-base text-white">
+              <span className="font-bold text-base text-slate-900">
                 MediChain Governance Console
               </span>
-              <span className="ml-2 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-950 text-amber-400 border border-amber-800">
+              <span className="ml-2 text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200">
                 Administrator
               </span>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-800 rounded-xl text-xs font-mono text-amber-300 border border-slate-700">
-              <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-amber-50 rounded-xl text-xs font-mono text-amber-900 border border-amber-200 font-semibold">
+              <div className="w-2 h-2 rounded-full bg-emerald-500" />
               <span>Admin: Active Session</span>
             </div>
 
             <button
               onClick={handleLogout}
-              className="text-xs text-slate-400 hover:text-rose-400 font-semibold flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-800/80 border border-slate-700 transition"
+              className="text-xs text-slate-600 hover:text-rose-600 font-semibold flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-rose-50 border border-slate-200 transition"
               title="Logout session"
             >
               <LogOut className="w-3.5 h-3.5" />
@@ -194,26 +189,26 @@ export default function AdminDashboard() {
       {/* Main Layout */}
       <main className="max-w-6xl mx-auto px-4 py-8 w-full flex-1 space-y-6">
         {/* Zero PII Guarantee Banner */}
-        <div className="p-4 bg-slate-900 border border-slate-800 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
-          <div className="flex items-center gap-2.5 text-slate-300">
-            <Lock className="w-4 h-4 text-amber-400 shrink-0" />
+        <div className="p-4 bg-amber-50/70 border border-amber-200 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs shadow-sm">
+          <div className="flex items-center gap-2.5 text-amber-950">
+            <Lock className="w-4 h-4 text-amber-700 shrink-0" />
             <span>
-              <strong className="text-white">Zero PII Policy Enforced:</strong> Administrator access provides governance, provider registration, and audit telemetry. Raw patient medical records remain off-chain and mathematically unreadable.
+              <strong className="text-amber-950 font-bold">Zero PII Policy Enforced:</strong> Administrator access provides governance, provider registration, and audit telemetry. Raw patient medical records remain off-chain and mathematically unreadable.
             </span>
           </div>
-          <span className="text-[10px] font-mono text-slate-500 shrink-0">
+          <span className="text-[10px] font-mono text-amber-800 font-semibold shrink-0">
             Chain ID: {MST_TESTNET_CONFIG.chainIdDecimal}
           </span>
         </div>
 
         {/* Navigation Tabs */}
-        <div className="flex flex-wrap items-center gap-2 border-b border-slate-800 pb-4">
+        <div className="flex flex-wrap items-center gap-2 border-b border-slate-200 pb-4">
           <button
             onClick={() => setActiveTab("overview")}
             className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
               activeTab === "overview"
                 ? "bg-amber-600 text-white shadow-md shadow-amber-600/20"
-                : "bg-slate-900 text-slate-400 hover:text-white border border-slate-800"
+                : "bg-white text-slate-600 hover:text-slate-900 border border-slate-200"
             }`}
           >
             <Activity className="w-3.5 h-3.5" />
@@ -225,7 +220,7 @@ export default function AdminDashboard() {
             className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
               activeTab === "providers"
                 ? "bg-amber-600 text-white shadow-md shadow-amber-600/20"
-                : "bg-slate-900 text-slate-400 hover:text-white border border-slate-800"
+                : "bg-white text-slate-600 hover:text-slate-900 border border-slate-200"
             }`}
           >
             <Building2 className="w-3.5 h-3.5" />
@@ -237,7 +232,7 @@ export default function AdminDashboard() {
             className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
               activeTab === "audit"
                 ? "bg-amber-600 text-white shadow-md shadow-amber-600/20"
-                : "bg-slate-900 text-slate-400 hover:text-white border border-slate-800"
+                : "bg-white text-slate-600 hover:text-slate-900 border border-slate-200"
             }`}
           >
             <FileText className="w-3.5 h-3.5" />
@@ -249,7 +244,7 @@ export default function AdminDashboard() {
             className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
               activeTab === "blockchain"
                 ? "bg-amber-600 text-white shadow-md shadow-amber-600/20"
-                : "bg-slate-900 text-slate-400 hover:text-white border border-slate-800"
+                : "bg-white text-slate-600 hover:text-slate-900 border border-slate-200"
             }`}
           >
             <Server className="w-3.5 h-3.5" />
@@ -261,7 +256,7 @@ export default function AdminDashboard() {
             className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
               activeTab === "health"
                 ? "bg-amber-600 text-white shadow-md shadow-amber-600/20"
-                : "bg-slate-900 text-slate-400 hover:text-white border border-slate-800"
+                : "bg-white text-slate-600 hover:text-slate-900 border border-slate-200"
             }`}
           >
             <Database className="w-3.5 h-3.5" />
@@ -273,55 +268,55 @@ export default function AdminDashboard() {
         {activeTab === "overview" && (
           <div className="space-y-6">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              <div className="p-4 bg-slate-900 border border-slate-800 rounded-2xl">
-                <span className="text-slate-400 text-xs">Total Patients</span>
-                <p className="text-2xl font-black text-white mt-1">{stats.totalPatients}</p>
-                <span className="text-[10px] text-emerald-400">Sovereign Vaults</span>
+              <div className="p-5 bg-white border border-slate-200 rounded-3xl shadow-sm">
+                <span className="text-slate-500 text-xs font-medium">Total Patients</span>
+                <p className="text-2xl font-black text-slate-950 mt-1">{stats.totalPatients}</p>
+                <span className="text-[10px] text-emerald-600 font-semibold">Sovereign Vaults</span>
               </div>
-              <div className="p-4 bg-slate-900 border border-slate-800 rounded-2xl">
-                <span className="text-slate-400 text-xs">Healthcare Providers</span>
-                <p className="text-2xl font-black text-cyan-400 mt-1">{stats.totalProviders}</p>
+              <div className="p-5 bg-white border border-slate-200 rounded-3xl shadow-sm">
+                <span className="text-slate-500 text-xs font-medium">Healthcare Providers</span>
+                <p className="text-2xl font-black text-cyan-700 mt-1">{stats.totalProviders}</p>
                 <span className="text-[10px] text-slate-500">Authorized Nodes</span>
               </div>
-              <div className="p-4 bg-slate-900 border border-slate-800 rounded-2xl">
-                <span className="text-slate-400 text-xs">Encrypted Records</span>
-                <p className="text-2xl font-black text-indigo-400 mt-1">{stats.totalRecords}</p>
+              <div className="p-5 bg-white border border-slate-200 rounded-3xl shadow-sm">
+                <span className="text-slate-500 text-xs font-medium">Encrypted Records</span>
+                <p className="text-2xl font-black text-indigo-700 mt-1">{stats.totalRecords}</p>
                 <span className="text-[10px] text-slate-500">SHA-256 Hashed</span>
               </div>
-              <div className="p-4 bg-slate-900 border border-slate-800 rounded-2xl">
-                <span className="text-slate-400 text-xs">Consent Requests</span>
-                <p className="text-2xl font-black text-amber-400 mt-1">{stats.totalRequests}</p>
+              <div className="p-5 bg-white border border-slate-200 rounded-3xl shadow-sm">
+                <span className="text-slate-500 text-xs font-medium">Consent Requests</span>
+                <p className="text-2xl font-black text-amber-700 mt-1">{stats.totalRequests}</p>
                 <span className="text-[10px] text-slate-500">On-Chain State Machine</span>
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="p-4 bg-slate-900 border border-slate-800 rounded-2xl flex items-center justify-between">
+              <div className="p-5 bg-white border border-slate-200 rounded-3xl flex items-center justify-between shadow-sm">
                 <div>
-                  <span className="text-slate-400 text-xs">Active Permissions</span>
-                  <p className="text-xl font-bold text-emerald-400 mt-1">{stats.activePermissions}</p>
+                  <span className="text-slate-500 text-xs font-medium">Active Permissions</span>
+                  <p className="text-xl font-bold text-emerald-700 mt-1">{stats.activePermissions}</p>
                 </div>
-                <div className="w-10 h-10 rounded-xl bg-emerald-950 text-emerald-400 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
                   <CheckCircle2 className="w-5 h-5" />
                 </div>
               </div>
 
-              <div className="p-4 bg-slate-900 border border-slate-800 rounded-2xl flex items-center justify-between">
+              <div className="p-5 bg-white border border-slate-200 rounded-3xl flex items-center justify-between shadow-sm">
                 <div>
-                  <span className="text-slate-400 text-xs">Expired Permissions</span>
-                  <p className="text-xl font-bold text-slate-400 mt-1">{stats.expiredPermissions}</p>
+                  <span className="text-slate-500 text-xs font-medium">Expired Permissions</span>
+                  <p className="text-xl font-bold text-slate-600 mt-1">{stats.expiredPermissions}</p>
                 </div>
-                <div className="w-10 h-10 rounded-xl bg-slate-800 text-slate-400 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-2xl bg-slate-100 text-slate-500 flex items-center justify-center">
                   <Clock className="w-5 h-5" />
                 </div>
               </div>
 
-              <div className="p-4 bg-slate-900 border border-slate-800 rounded-2xl flex items-center justify-between">
+              <div className="p-5 bg-white border border-slate-200 rounded-3xl flex items-center justify-between shadow-sm">
                 <div>
-                  <span className="text-slate-400 text-xs">Revoked Permissions</span>
-                  <p className="text-xl font-bold text-rose-400 mt-1">{stats.revokedPermissions}</p>
+                  <span className="text-slate-500 text-xs font-medium">Revoked Permissions</span>
+                  <p className="text-xl font-bold text-rose-700 mt-1">{stats.revokedPermissions}</p>
                 </div>
-                <div className="w-10 h-10 rounded-xl bg-rose-950 text-rose-400 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center">
                   <XCircle className="w-5 h-5" />
                 </div>
               </div>
@@ -332,33 +327,33 @@ export default function AdminDashboard() {
         {/* 2. PROVIDERS */}
         {activeTab === "providers" && (
           <div className="space-y-4">
-            <h3 className="text-sm font-bold text-white flex items-center gap-2">
-              <Building2 className="w-4 h-4 text-amber-400" />
+            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+              <Building2 className="w-4 h-4 text-amber-600" />
               <span>Registered Healthcare Providers on MST Blockchain</span>
             </h3>
 
-            <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
-              <div className="p-4 border-b border-slate-800 flex items-center justify-between text-xs text-slate-400">
-                <span>Authorized Provider Nodes</span>
-                <span className="text-emerald-400 font-semibold">2 Verified</span>
+            <div className="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm">
+              <div className="p-4 border-b border-slate-200 flex items-center justify-between text-xs text-slate-500 bg-slate-50/50">
+                <span className="font-semibold text-slate-700">Authorized Provider Nodes</span>
+                <span className="text-emerald-700 font-bold">2 Verified</span>
               </div>
-              <div className="divide-y divide-slate-800">
+              <div className="divide-y divide-slate-100">
                 {providers.map((p, idx) => (
-                  <div key={idx} className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+                  <div key={idx} className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
                     <div>
-                      <h4 className="font-bold text-white">{p.institution}</h4>
-                      <p className="font-mono text-cyan-300 text-[11px] mt-0.5">{p.address}</p>
+                      <h4 className="font-bold text-slate-900">{p.institution}</h4>
+                      <p className="font-mono text-cyan-800 text-[11px] mt-0.5">{p.address}</p>
                     </div>
 
                     <div className="flex items-center gap-3">
-                      <span className="px-2.5 py-1 rounded-full text-[10px] font-semibold bg-emerald-950 text-emerald-400 border border-emerald-800">
+                      <span className="px-3 py-1 rounded-full text-[10px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">
                         {p.status}
                       </span>
                       <a
                         href={`https://mstscan.com/tx/${p.txHash}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-indigo-400 hover:text-indigo-300 flex items-center gap-1 text-[11px]"
+                        className="text-indigo-600 hover:text-indigo-700 font-semibold flex items-center gap-1 text-[11px]"
                       >
                         <span>Tx Proof</span>
                         <ExternalLink className="w-3 h-3" />
@@ -374,26 +369,26 @@ export default function AdminDashboard() {
         {/* 3. AUDIT LOGS */}
         {activeTab === "audit" && (
           <div className="space-y-4">
-            <h3 className="text-sm font-bold text-white flex items-center gap-2">
-              <FileText className="w-4 h-4 text-amber-400" />
+            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+              <FileText className="w-4 h-4 text-amber-600" />
               <span>Cryptographic Consent &amp; Access Audit Trail</span>
             </h3>
 
-            <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden divide-y divide-slate-800">
+            <div className="bg-white border border-slate-200 rounded-3xl overflow-hidden divide-y divide-slate-100 shadow-sm">
               {auditEvents.map((evt, idx) => (
-                <div key={idx} className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+                <div key={idx} className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <span className="font-mono text-[10px] text-slate-500">{evt.id}</span>
-                      <span className="font-bold text-white">{evt.type}</span>
-                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-300">
+                      <span className="font-mono text-[10px] text-slate-400 font-semibold">{evt.id}</span>
+                      <span className="font-bold text-slate-900">{evt.type}</span>
+                      <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 font-medium">
                         {evt.status}
                       </span>
                     </div>
-                    <p className="text-slate-400 text-[11px]">
-                      Purpose: <span className="text-slate-200">{evt.purpose}</span>
+                    <p className="text-slate-600 text-[11px]">
+                      Purpose: <span className="text-slate-900 font-medium">{evt.purpose}</span>
                     </p>
-                    <p className="font-mono text-[10px] text-slate-500">
+                    <p className="font-mono text-[10px] text-slate-400">
                       Actor: {evt.actor}
                     </p>
                   </div>
@@ -411,43 +406,43 @@ export default function AdminDashboard() {
         {activeTab === "blockchain" && (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                <Server className="w-4 h-4 text-amber-400" />
+              <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                <Server className="w-4 h-4 text-amber-600" />
                 <span>MST Testnet Immutable Transactions</span>
               </h3>
               <a
                 href={`https://mstscan.com/address/${contractAddress}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-xs text-indigo-400 hover:text-indigo-300 flex items-center gap-1"
+                className="text-xs text-indigo-600 hover:underline font-semibold flex items-center gap-1"
               >
                 <span>View on MSTScan</span>
                 <ExternalLink className="w-3 h-3" />
               </a>
             </div>
 
-            <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden divide-y divide-slate-800">
+            <div className="bg-white border border-slate-200 rounded-3xl overflow-hidden divide-y divide-slate-100 shadow-sm">
               {blockchainLogs.map((log, idx) => (
-                <div key={idx} className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+                <div key={idx} className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <span className="font-bold text-white">{log.event}</span>
-                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800">
+                      <span className="font-bold text-slate-900">{log.event}</span>
+                      <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 font-semibold">
                         {log.status}
                       </span>
                     </div>
-                    <p className="font-mono text-[11px] text-slate-400">
+                    <p className="font-mono text-[11px] text-slate-600">
                       Tx:{" "}
                       <a
                         href={`https://mstscan.com/tx/${log.txHash}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-cyan-400 hover:underline"
+                        className="text-indigo-600 hover:underline font-semibold"
                       >
                         {log.txHash.slice(0, 20)}...{log.txHash.slice(-8)}
                       </a>
                     </p>
-                    <p className="font-mono text-[10px] text-slate-500">
+                    <p className="font-mono text-[10px] text-slate-400">
                       Signer: {log.wallet}
                     </p>
                   </div>
@@ -464,40 +459,40 @@ export default function AdminDashboard() {
         {/* 5. SYSTEM HEALTH */}
         {activeTab === "health" && (
           <div className="space-y-4">
-            <h3 className="text-sm font-bold text-white flex items-center gap-2">
-              <Database className="w-4 h-4 text-amber-400" />
+            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+              <Database className="w-4 h-4 text-amber-600" />
               <span>Protocol &amp; Infrastructure Health</span>
             </h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="p-4 bg-slate-900 border border-slate-800 rounded-2xl space-y-2">
+              <div className="p-5 bg-white border border-slate-200 rounded-3xl space-y-2 shadow-sm">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-slate-400">MST Testnet RPC</span>
-                  <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="text-xs text-slate-500 font-medium">MST Testnet RPC</span>
+                  <div className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
                 </div>
-                <p className="text-sm font-bold text-white">ONLINE (91562037)</p>
+                <p className="text-sm font-bold text-slate-900">ONLINE (91562037)</p>
                 <p className="text-[10px] font-mono text-slate-500">
                   https://testnetrpc.mstblockchain.com
                 </p>
               </div>
 
-              <div className="p-4 bg-slate-900 border border-slate-800 rounded-2xl space-y-2">
+              <div className="p-5 bg-white border border-slate-200 rounded-3xl space-y-2 shadow-sm">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-slate-400">Smart Contract</span>
-                  <div className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
+                  <span className="text-xs text-slate-500 font-medium">Smart Contract</span>
+                  <div className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
                 </div>
-                <p className="text-sm font-bold text-white">DEPLOYED &amp; VERIFIED</p>
+                <p className="text-sm font-bold text-slate-900">DEPLOYED &amp; VERIFIED</p>
                 <p className="text-[10px] font-mono text-slate-500 truncate">
                   {contractAddress}
                 </p>
               </div>
 
-              <div className="p-4 bg-slate-900 border border-slate-800 rounded-2xl space-y-2">
+              <div className="p-5 bg-white border border-slate-200 rounded-3xl space-y-2 shadow-sm">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-slate-400">Off-Chain Storage</span>
-                  <div className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
+                  <span className="text-xs text-slate-500 font-medium">Off-Chain Storage</span>
+                  <div className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
                 </div>
-                <p className="text-sm font-bold text-white">AES-256-GCM ACTIVE</p>
+                <p className="text-sm font-bold text-slate-900">AES-256-GCM ACTIVE</p>
                 <p className="text-[10px] text-slate-500">
                   Zero unencrypted PII persistence
                 </p>
@@ -508,7 +503,7 @@ export default function AdminDashboard() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-slate-900 py-4 text-center text-xs text-slate-600">
+      <footer className="border-t border-slate-200 bg-white py-4 text-center text-xs text-slate-500">
         MediChain &bull; Administrator Governance &bull; MST Testnet ({MST_TESTNET_CONFIG.chainIdDecimal})
       </footer>
     </div>

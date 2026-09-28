@@ -19,8 +19,6 @@ import {
   LogOut,
   ShieldCheck,
   FileCheck2,
-  Calendar,
-  User,
 } from "lucide-react";
 
 export default function PatientDashboard() {
@@ -182,9 +180,9 @@ STATUS: STABLE - DIETARY MODIFICATION RECOMMENDED`;
 
   if (!isInitialized || !isAuthenticated) {
     return (
-      <div className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center">
-        <div className="flex items-center gap-3 text-sm text-slate-400">
-          <Loader2 className="w-5 h-5 animate-spin text-indigo-400" />
+      <div className="min-h-screen bg-slate-50 text-slate-900 flex items-center justify-center">
+        <div className="flex items-center gap-3 text-sm text-slate-500">
+          <Loader2 className="w-5 h-5 animate-spin text-indigo-600" />
           <span>Verifying sovereign patient session...</span>
         </div>
       </div>
@@ -192,19 +190,19 @@ STATUS: STABLE - DIETARY MODIFICATION RECOMMENDED`;
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-indigo-500 selection:text-white">
+    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans selection:bg-indigo-600 selection:text-white">
       {/* Top Navbar */}
-      <header className="bg-slate-900 border-b border-slate-800 sticky top-0 z-40">
+      <header className="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
         <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold shadow-md shadow-indigo-600/20">
               <FolderHeart className="w-5 h-5" />
             </div>
             <div>
-              <span className="font-bold text-base text-white">
+              <span className="font-bold text-base text-slate-900">
                 Patient Sovereign Portal
               </span>
-              <span className="ml-2 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-indigo-950 text-indigo-400 border border-indigo-800">
+              <span className="ml-2 text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">
                 MST Testnet
               </span>
             </div>
@@ -213,8 +211,8 @@ STATUS: STABLE - DIETARY MODIFICATION RECOMMENDED`;
           <div className="flex items-center gap-3">
             {/* Connected Account Pill */}
             {account && (
-              <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-800 rounded-xl text-xs font-mono text-slate-300 border border-slate-700">
-                <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-100 rounded-xl text-xs font-mono text-slate-700 border border-slate-200">
+                <div className="w-2 h-2 rounded-full bg-emerald-500" />
                 <span>
                   {account.slice(0, 6)}...{account.slice(-4)}
                 </span>
@@ -224,7 +222,7 @@ STATUS: STABLE - DIETARY MODIFICATION RECOMMENDED`;
             {/* Logout Button */}
             <button
               onClick={handleLogout}
-              className="text-xs text-slate-400 hover:text-rose-400 font-semibold flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-800/80 border border-slate-700 transition"
+              className="text-xs text-slate-600 hover:text-rose-600 font-semibold flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-rose-50 border border-slate-200 transition"
               title="Logout session"
             >
               <LogOut className="w-3.5 h-3.5" />
@@ -236,13 +234,13 @@ STATUS: STABLE - DIETARY MODIFICATION RECOMMENDED`;
 
       {/* Notifications */}
       {notice && (
-        <div className="bg-emerald-600 text-white text-xs px-4 py-2 text-center font-medium shadow-sm flex items-center justify-center gap-2">
+        <div className="bg-emerald-600 text-white text-xs px-4 py-2.5 text-center font-medium shadow-sm flex items-center justify-center gap-2">
           <CheckCircle2 className="w-4 h-4 shrink-0" />
           <span>{notice}</span>
         </div>
       )}
       {error && (
-        <div className="bg-rose-600 text-white text-xs px-4 py-2 text-center font-medium shadow-sm flex items-center justify-center gap-2">
+        <div className="bg-rose-600 text-white text-xs px-4 py-2.5 text-center font-medium shadow-sm flex items-center justify-center gap-2">
           <AlertCircle className="w-4 h-4 shrink-0" />
           <span>{error}</span>
         </div>
@@ -251,14 +249,14 @@ STATUS: STABLE - DIETARY MODIFICATION RECOMMENDED`;
       {/* Main Content */}
       <main className="max-w-6xl mx-auto px-4 py-8 w-full flex-1 space-y-8">
         {/* Navigation Tabs */}
-        <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+        <div className="flex items-center justify-between border-b border-slate-200 pb-4">
           <div className="flex items-center gap-2">
             <button
               onClick={() => setActiveTab("records")}
               className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 ${
                 activeTab === "records"
                   ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/20"
-                  : "bg-slate-900 text-slate-400 hover:text-white border border-slate-800"
+                  : "bg-white text-slate-600 hover:text-slate-900 border border-slate-200"
               }`}
             >
               <FileCheck2 className="w-4 h-4" />
@@ -270,7 +268,7 @@ STATUS: STABLE - DIETARY MODIFICATION RECOMMENDED`;
               className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 ${
                 activeTab === "requests"
                   ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/20"
-                  : "bg-slate-900 text-slate-400 hover:text-white border border-slate-800"
+                  : "bg-white text-slate-600 hover:text-slate-900 border border-slate-200"
               }`}
             >
               <Clock className="w-4 h-4" />
@@ -280,7 +278,7 @@ STATUS: STABLE - DIETARY MODIFICATION RECOMMENDED`;
 
           <button
             onClick={loadData}
-            className="text-xs text-slate-400 hover:text-indigo-400 flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 transition"
+            className="text-xs text-slate-600 hover:text-indigo-600 flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-slate-200 shadow-sm transition"
           >
             <RefreshCw className="w-3.5 h-3.5" />
             <span>Sync MST</span>
@@ -291,44 +289,44 @@ STATUS: STABLE - DIETARY MODIFICATION RECOMMENDED`;
         {activeTab === "records" && (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Upload & Register Box */}
-            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-sm flex flex-col justify-between">
+            <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm flex flex-col justify-between">
               <div>
-                <div className="flex items-center gap-2 text-indigo-400 mb-3">
+                <div className="flex items-center gap-2 text-indigo-600 mb-3">
                   <Upload className="w-5 h-5" />
-                  <h2 className="text-base font-bold text-white">
+                  <h2 className="text-base font-bold text-slate-900">
                     Encrypt &amp; Register on MST
                   </h2>
                 </div>
-                <p className="text-xs text-slate-400 mb-6 leading-relaxed">
+                <p className="text-xs text-slate-500 mb-6 leading-relaxed">
                   Off-chain AES-256-GCM encryption with SHA-256 integrity hash verification on MST Blockchain.
                 </p>
 
                 <form onSubmit={handleUpload} className="space-y-4">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                    <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                       Record Title / Description
                     </label>
                     <input
                       type="text"
                       value={uploadTitle}
                       onChange={(e) => setUploadTitle(e.target.value)}
-                      className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                      className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:bg-white"
                       required
                     />
                   </div>
 
-                  <div className="p-3 bg-slate-950 border border-slate-800 rounded-xl text-[11px] text-slate-400 space-y-1">
-                    <div className="flex items-center gap-1.5 text-indigo-400 font-semibold">
+                  <div className="p-3.5 bg-indigo-50/70 border border-indigo-100 rounded-xl text-[11px] text-indigo-950 space-y-1">
+                    <div className="flex items-center gap-1.5 text-indigo-700 font-bold">
                       <Lock className="w-3.5 h-3.5" />
                       <span>Zero PII on Blockchain</span>
                     </div>
-                    <p>Raw clinical data is encrypted with AES-256-GCM off-chain. Only cryptographic hashes and consent proofs touch MST Testnet.</p>
+                    <p className="text-indigo-900/80">Raw clinical data is encrypted with AES-256-GCM off-chain. Only cryptographic hashes and consent proofs touch MST Testnet.</p>
                   </div>
 
                   <button
                     type="submit"
                     disabled={uploadLoading}
-                    className="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-500 disabled:bg-slate-800 disabled:text-slate-500 text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 shadow-md shadow-indigo-600/20"
+                    className="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-200 disabled:text-slate-400 text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 shadow-md shadow-indigo-600/20"
                   >
                     {uploadLoading ? (
                       <>
@@ -348,13 +346,13 @@ STATUS: STABLE - DIETARY MODIFICATION RECOMMENDED`;
 
             {/* List of Registered Records */}
             <div className="lg:col-span-2 space-y-4">
-              <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                <FileText className="w-4 h-4 text-indigo-400" />
+              <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                <FileText className="w-4 h-4 text-indigo-600" />
                 <span>My Registered Records</span>
               </h3>
 
               {records.length === 0 ? (
-                <div className="p-8 bg-slate-900 border border-slate-800 rounded-2xl text-center text-xs text-slate-500">
+                <div className="p-8 bg-white border border-slate-200 rounded-3xl text-center text-xs text-slate-500 shadow-sm">
                   No records uploaded yet. Click &quot;Sign &amp; Register on MST&quot; to create your first encrypted health record.
                 </div>
               ) : (
@@ -362,52 +360,52 @@ STATUS: STABLE - DIETARY MODIFICATION RECOMMENDED`;
                   {records.map((r, idx) => (
                     <div
                       key={idx}
-                      className="p-4 bg-slate-900 border border-slate-800 rounded-2xl hover:border-indigo-500/40 transition space-y-3"
+                      className="p-5 bg-white border border-slate-200 rounded-2xl hover:border-indigo-400 transition space-y-3 shadow-sm hover:shadow"
                     >
                       <div className="flex items-start justify-between">
                         <div>
-                          <h4 className="text-sm font-bold text-white">
+                          <h4 className="text-sm font-bold text-slate-900">
                             {r.title || "Clinical Medical Record"}
                           </h4>
                           <span className="text-[10px] text-slate-500 font-mono">
                             Timestamp: {new Date(r.timestamp).toLocaleString()}
                           </span>
                         </div>
-                        <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-950 text-emerald-400 border border-emerald-800">
+                        <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
                           Active On-Chain
                         </span>
                       </div>
 
-                      <div className="bg-slate-950 p-2.5 rounded-xl border border-slate-800 text-[11px] font-mono space-y-1.5">
-                        <div className="flex items-center justify-between text-slate-400">
+                      <div className="bg-slate-50 p-3 rounded-xl border border-slate-200 text-[11px] font-mono space-y-1.5">
+                        <div className="flex items-center justify-between text-slate-600">
                           <span className="text-slate-500">Record ID:</span>
                           <div className="flex items-center gap-2">
-                            <span className="text-indigo-300">
+                            <span className="text-indigo-700 font-semibold">
                               {r.recordId.slice(0, 14)}...{r.recordId.slice(-8)}
                             </span>
                             <button
                               onClick={() => copyToClipboard(r.recordId)}
-                              className="text-slate-400 hover:text-white"
+                              className="text-slate-400 hover:text-slate-700"
                               title="Copy full Record ID"
                             >
                               <Copy className="w-3.5 h-3.5" />
                             </button>
                             {copiedId === r.recordId && (
-                              <span className="text-emerald-400 text-[10px]">Copied!</span>
+                              <span className="text-emerald-600 text-[10px] font-sans font-semibold">Copied!</span>
                             )}
                           </div>
                         </div>
 
-                        <div className="flex items-center justify-between text-slate-400">
+                        <div className="flex items-center justify-between text-slate-600">
                           <span className="text-slate-500">SHA-256 Hash:</span>
-                          <span className="text-slate-300 text-[10px]">
+                          <span className="text-slate-800 text-[10px]">
                             {r.fileHash ? `${r.fileHash.slice(0, 16)}...` : "Verified"}
                           </span>
                         </div>
 
-                        <div className="flex items-center justify-between text-slate-400">
+                        <div className="flex items-center justify-between text-slate-600">
                           <span className="text-slate-500">Encrypted Pointer:</span>
-                          <span className="text-slate-300 text-[10px]">
+                          <span className="text-slate-800 text-[10px]">
                             {r.storagePointer || "storage/offchain"}
                           </span>
                         </div>
@@ -423,13 +421,13 @@ STATUS: STABLE - DIETARY MODIFICATION RECOMMENDED`;
         {/* Tab 2: Incoming Requests */}
         {activeTab === "requests" && (
           <div className="space-y-4">
-            <h3 className="text-sm font-bold text-white flex items-center gap-2">
-              <Clock className="w-4 h-4 text-indigo-400" />
+            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+              <Clock className="w-4 h-4 text-indigo-600" />
               <span>Incoming Consent Requests from Healthcare Providers</span>
             </h3>
 
             {requests.length === 0 ? (
-              <div className="p-8 bg-slate-900 border border-slate-800 rounded-2xl text-center text-xs text-slate-500">
+              <div className="p-8 bg-white border border-slate-200 rounded-3xl text-center text-xs text-slate-500 shadow-sm">
                 No consent requests pending. When an authorized hospital requests access, it will appear here for your cryptographic approval.
               </div>
             ) : (
@@ -437,46 +435,46 @@ STATUS: STABLE - DIETARY MODIFICATION RECOMMENDED`;
                 {requests.map((req) => (
                   <div
                     key={req.id}
-                    className="p-5 bg-slate-900 border border-slate-800 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4"
+                    className="p-5 bg-white border border-slate-200 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-sm"
                   >
                     <div className="space-y-2 text-xs">
                       <div className="flex items-center gap-2">
-                        <span className="font-bold text-sm text-white">
+                        <span className="font-bold text-sm text-slate-900">
                           Request #{req.id}
                         </span>
                         {req.status === 0 && (
-                          <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-950 text-amber-400 border border-amber-800">
+                          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-amber-50 text-amber-700 border border-amber-200">
                             Awaiting Patient Approval
                           </span>
                         )}
                         {req.status === 1 && (
-                          <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-950 text-emerald-400 border border-emerald-800">
+                          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
                             Consent Granted (Active)
                           </span>
                         )}
                         {req.status === 2 && (
-                          <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-rose-950 text-rose-400 border border-rose-800">
+                          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-rose-50 text-rose-700 border border-rose-200">
                             Access Denied
                           </span>
                         )}
                       </div>
 
-                      <div className="text-slate-400 text-[11px] space-y-1">
+                      <div className="text-slate-600 text-[11px] space-y-1">
                         <div>
                           <span className="text-slate-500">Provider Address:</span>{" "}
-                          <span className="font-mono text-cyan-300">{req.provider}</span>
+                          <span className="font-mono text-cyan-700 font-semibold">{req.provider}</span>
                         </div>
                         <div>
                           <span className="text-slate-500">Clinical Purpose:</span>{" "}
-                          <span className="text-white font-medium">{req.purpose}</span>
+                          <span className="text-slate-900 font-semibold">{req.purpose}</span>
                         </div>
                         <div>
                           <span className="text-slate-500">Requested Validity:</span>{" "}
-                          <span className="text-slate-200">{req.durationHours} Hours</span>
+                          <span className="text-slate-700 font-medium">{req.durationHours} Hours</span>
                         </div>
                         <div>
                           <span className="text-slate-500">Target Record ID:</span>{" "}
-                          <span className="font-mono text-indigo-300">
+                          <span className="font-mono text-indigo-700">
                             {req.recordId.slice(0, 14)}...
                           </span>
                         </div>
@@ -488,7 +486,7 @@ STATUS: STABLE - DIETARY MODIFICATION RECOMMENDED`;
                         <button
                           onClick={() => handleGrant(req.id)}
                           disabled={actionLoading === req.id}
-                          className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-800 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-md shadow-emerald-600/20"
+                          className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-200 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-md shadow-emerald-600/20"
                         >
                           {actionLoading === req.id ? (
                             <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -501,7 +499,7 @@ STATUS: STABLE - DIETARY MODIFICATION RECOMMENDED`;
                         <button
                           onClick={() => handleDeny(req.id)}
                           disabled={actionLoading === req.id}
-                          className="px-4 py-2 bg-rose-600 hover:bg-rose-500 disabled:bg-slate-800 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5"
+                          className="px-4 py-2 bg-rose-600 hover:bg-rose-700 disabled:bg-slate-200 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-md shadow-rose-600/20"
                         >
                           <AlertCircle className="w-3.5 h-3.5" />
                           <span>Deny</span>
@@ -517,7 +515,7 @@ STATUS: STABLE - DIETARY MODIFICATION RECOMMENDED`;
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-slate-900 py-4 text-center text-xs text-slate-600">
+      <footer className="border-t border-slate-200 bg-white py-4 text-center text-xs text-slate-500">
         MediChain &bull; Patient Sovereign Vault &bull; MST Testnet ({MST_TESTNET_CONFIG.chainIdDecimal})
       </footer>
     </div>
