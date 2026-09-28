@@ -16,7 +16,7 @@ module.exports = {
     hardhat: {},
     mstTestnet: {
       url: process.env.MST_RPC_URL || "https://testnetrpc.mstblockchain.com",
-      chainId: 4545,
+      chainId: 91562037,
       accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
     },
   },

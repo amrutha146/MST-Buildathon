@@ -3,8 +3,8 @@ import contractAddressData from "./contractAddress.json";
 import MedicalConsentABI from "./MedicalConsentABI.json";
 
 export const MST_TESTNET_CONFIG = {
-  chainId: "0x11C1", // 4545 in hex
-  chainIdDecimal: 4545,
+  chainId: "0x5752c35", // 91562037 in hex
+  chainIdDecimal: 91562037,
   chainName: "MST Testnet",
   rpcUrls: ["https://testnetrpc.mstblockchain.com"],
   nativeCurrency: {

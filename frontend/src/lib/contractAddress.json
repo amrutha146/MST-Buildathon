@@ -1,7 +1,7 @@
 {
   "network": "mstTestnet",
-  "chainId": 4545,
-  "contractAddress": "",
-  "transactionHash": "",
-  "deployedAt": ""
+  "chainId": 91562037,
+  "contractAddress": "0xD86D80641E43a3055BFABC7A0435023E870cF651",
+  "transactionHash": "0x742eb6483d29a3ca7ab2cae3032916a7d45a5e81df84607d9aba50961848c618",
+  "deployedAt": "2026-09-28T16:29:31.377Z"
 }
