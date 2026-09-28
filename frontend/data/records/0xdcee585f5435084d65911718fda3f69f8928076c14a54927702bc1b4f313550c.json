@@ -1,0 +1,14 @@
+{
+  "recordId": "0xdcee585f5435084d65911718fda3f69f8928076c14a54927702bc1b4f313550c",
+  "title": "Annual Comprehensive Blood Panel",
+  "fileName": "blood_panel.txt",
+  "fileType": "text/plain",
+  "fileSize": 345,
+  "patientAddress": "0x94380b852ffd357acea496260296e6caca8f3de3",
+  "fileHash": "0x8f31c6f6b08fedb58d169b86b74094b1d1fdd7816d051dd71c2e6b9027a47dbe",
+  "storagePointer": "enc-store://0xdcee585f5435084d65911718fda3f69f8928076c14a54927702bc1b4f313550c.enc",
+  "iv": "66beb25eddff3c91f47c1799",
+  "authTag": "978b33cf21d807d687fba402ea034610",
+  "encryptedData": "U1BYYWxtahBIq5Bt3am5a/8lRaMZxPiW4rev6U2RLahr2Dj/EnKO0HFMU5IaE9/yuSkG5shBP34Wqfhsmtkwb8O9JygVAm6S+mw4RZERkTQ9bAjYPK7jCq+BwHpq5GOmv40YKb45mhy3Nu4CJ/Pn0Njt0oAcYR54McrhjWRKGy742tFG0Oiw7nZuvBFGx10keq/OrLsWY27ixAVuLHCLxa6T+kmYwoJrn0wy4LcWS82A4m+0eFLEqMjv+AvgFXoIqmhkWNCYFEuirrke1aVE14QpbEXnBH2Iq7cvJBZ/TfIWpsFQpyPkZCQL3GPyGwYictNhp0vqPtwgurPj/Tn1MSruuuiipWKCNW4rcjRx+rqKrB1po7t1jw6CjzXn66JAOw4AAE1PJYJQMSAF8mpa4aEC4Abxi55iZL19O2wOesDuzsKRo5xDkjy4RXDc3lzZx5qR7r2KP2ec",
+  "createdAt": "2026-09-28T20:44:33.196Z"
+}
