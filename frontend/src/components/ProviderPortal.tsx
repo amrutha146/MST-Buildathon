@@ -47,11 +47,12 @@ export function ProviderPortal({ account, signer, onTxSuccess }: ProviderPortalP
     setLoading(true);
 
     try {
+      const cleanRecordId = targetRecordId.trim().replace(/\.enc$/i, "");
       const contract = getMedicalConsentContract(signer);
       const durationSeconds = Number(durationHours) * 3600;
 
       const tx = await contract.requestAccess(
-        targetRecordId,
+        cleanRecordId,
         purpose,
         durationSeconds
       );
@@ -239,7 +240,11 @@ export function ProviderPortal({ account, signer, onTxSuccess }: ProviderPortalP
               <input
                 type="text"
                 value={targetRecordId}
-                onChange={(e) => setTargetRecordId(e.target.value.trim())}
+                onChange={(e) =>
+                  setTargetRecordId(
+                    e.target.value.trim().replace(/\.enc$/i, "")
+                  )
+                }
                 required
                 className="w-full text-xs font-mono px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 placeholder="0x..."
