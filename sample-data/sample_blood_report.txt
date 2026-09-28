@@ -1,0 +1,32 @@
+================================================================================
+                    METROPOLITAN CLINICAL LABORATORIES
+                       COMPREHENSIVE METABOLIC PANEL
+================================================================================
+PATIENT ID: DUMMY-PT-88421
+COLLECTION DATE: 2026-09-28
+ORDERING PHYSICIAN: Dr. S. Rao, MD (Cardiology)
+SPECIMEN: Serum / Venous Blood
+
+TEST NAME                    RESULT       REFERENCE RANGE       STATUS
+--------------------------------------------------------------------------------
+Glucose, Fasting             98 mg/dL     70 - 99 mg/dL         NORMAL
+Blood Urea Nitrogen (BUN)    14 mg/dL     7 - 20 mg/dL          NORMAL
+Creatinine                   0.92 mg/dL   0.60 - 1.20 mg/dL     NORMAL
+Sodium                       140 mmol/L   136 - 145 mmol/L      NORMAL
+Potassium                    4.2 mmol/L   3.5 - 5.1 mmol/L      NORMAL
+Chloride                     101 mmol/L   98 - 107 mmol/L       NORMAL
+Carbon Dioxide (CO2)         24 mmol/L    21 - 31 mmol/L        NORMAL
+Calcium                      9.4 mg/dL    8.5 - 10.5 mg/dL      NORMAL
+
+LIPID PANEL:
+Total Cholesterol            218 mg/dL    < 200 mg/dL           BORDERLINE HIGH
+Triglycerides                148 mg/dL    < 150 mg/dL           NORMAL
+HDL Cholesterol              52 mg/dL     > 40 mg/dL            NORMAL
+LDL Cholesterol (Calc)       142 mg/dL    < 100 mg/dL           ELEVATED
+
+CLINICAL IMPRESSION:
+Mild hyperlipidemia. Renal and electrolyte parameters within normal limits.
+Recommend dietary modification and repeat lipid panel in 60-90 days.
+================================================================================
+CONFIDENTIAL MEDICAL DOCUMENT - PROTECTED UNDER PATIENT CONSENT GOVERNANCE
+================================================================================
