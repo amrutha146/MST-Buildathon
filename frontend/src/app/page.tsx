@@ -6,7 +6,7 @@ import { PatientDashboard } from "@/components/PatientDashboard";
 import { ProviderPortal } from "@/components/ProviderPortal";
 import { AuditTimeline, AuditEventItem } from "@/components/AuditTimeline";
 import { connectBridgeKey, getContractAddress, getBridgeKeyProvider } from "@/lib/mst";
-import { AlertCircle, CheckCircle2 } from "lucide-react";
+import { AlertCircle, CheckCircle2, X } from "lucide-react";
 
 export default function App() {
   const [account, setAccount] = useState<string | null>(null);
@@ -15,24 +15,43 @@ export default function App() {
   const [events, setEvents] = useState<AuditEventItem[]>([]);
   const [contractAddress, setContractAddress] = useState<string>("");
   const [bannerNotice, setBannerNotice] = useState<string | null>(null);
+  const [connectError, setConnectError] = useState<string | null>(null);
+  const [isConnecting, setIsConnecting] = useState(false);
 
   useEffect(() => {
     setContractAddress(getContractAddress());
 
-    // Auto-detect existing wallet session if available
-    const rawProvider = getBridgeKeyProvider();
-    if (rawProvider && rawProvider.selectedAddress) {
-      handleConnect();
-    }
+    // Check if wallet is already connected
+    const checkExistingConnection = async () => {
+      const raw = getBridgeKeyProvider();
+      if (raw && typeof raw.request === "function") {
+        try {
+          const accounts = await raw.request({ method: "eth_accounts" });
+          if (accounts && accounts.length > 0) {
+            handleConnect();
+          }
+        } catch (e) {
+          // ignore
+        }
+      }
+    };
+    checkExistingConnection();
   }, []);
 
   const handleConnect = async () => {
+    setIsConnecting(true);
+    setConnectError(null);
     try {
       const { address, signer: sig } = await connectBridgeKey();
       setAccount(address);
       setSigner(sig);
+      setBannerNotice(`Connected to BridgeKey wallet: ${address.slice(0, 6)}...${address.slice(-4)}`);
+      setTimeout(() => setBannerNotice(null), 5000);
     } catch (e: any) {
-      console.warn("Wallet connect warning:", e.message);
+      console.error("Wallet connect error:", e);
+      setConnectError(e.message || "Could not connect to wallet. Make sure BridgeKey is unlocked.");
+    } finally {
+      setIsConnecting(false);
     }
   };
 
@@ -47,7 +66,7 @@ export default function App() {
     setEvents((prev) => [newEvent, ...prev]);
 
     setBannerNotice(`Transaction confirmed on MST Testnet: ${title}`);
-    setTimeout(() => setBannerNotice(null), 6000);
+    setTimeout(() => setBannerNotice(null), 7000);
   };
 
   return (
@@ -67,21 +86,33 @@ export default function App() {
         </div>
       )}
 
+      {/* Connection error toast */}
+      {connectError && (
+        <div className="bg-rose-600 text-white text-xs px-4 py-2.5 text-center font-medium shadow-sm flex items-center justify-center gap-2">
+          <AlertCircle className="w-4 h-4 flex-shrink-0" />
+          <span>{connectError}</span>
+          <button onClick={() => setConnectError(null)} className="ml-2 hover:opacity-75">
+            <X className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      )}
+
       {/* Main Content Area */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {!account && (
-          <div className="mb-6 p-4 rounded-2xl bg-indigo-50/80 border border-indigo-100 flex items-center justify-between text-xs text-indigo-900">
+          <div className="mb-6 p-4 rounded-2xl bg-indigo-50/80 border border-indigo-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-indigo-900">
             <div className="flex items-center gap-2">
               <AlertCircle className="w-4 h-4 text-indigo-600 flex-shrink-0" />
               <span>
-                To sign transactions and manage consent, please connect your <strong>BridgeKey wallet</strong> (MST Testnet Chain ID 4545).
+                To sign transactions and manage consent, please connect your <strong>BridgeKey wallet</strong> (MST Testnet).
               </span>
             </div>
             <button
               onClick={handleConnect}
-              className="px-3 py-1.5 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition"
+              disabled={isConnecting}
+              className="px-4 py-2 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 transition shadow-sm disabled:opacity-50"
             >
-              Connect Now
+              {isConnecting ? "Connecting..." : "Connect BridgeKey"}
             </button>
           </div>
         )}
