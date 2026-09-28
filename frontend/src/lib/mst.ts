@@ -52,60 +52,72 @@ export function getBridgeKeyProvider(): any {
 }
 
 /**
- * Requests wallet connection and ensures the user is connected to MST Testnet
+ * Checks for already-authorized accounts silently without opening a wallet popup
  */
-export async function connectBridgeKey(): Promise<{
-  address: string;
-  provider: BrowserProvider;
-  signer: ethers.JsonRpcSigner;
-}> {
-  const rawProvider = getBridgeKeyProvider();
-  if (!rawProvider) {
-    throw new Error(
-      "BridgeKey or Web3 wallet extension not detected in this browser tab. Please reload or click the BridgeKey extension icon to activate it."
-    );
-  }
-
-  const provider = new BrowserProvider(rawProvider);
-
-  // Request accounts from wallet
-  let accounts: string[] = [];
+export async function getSilentlyConnectedAccounts(rawProvider: any): Promise<string[]> {
+  if (!rawProvider || typeof rawProvider.request !== "function") return [];
   try {
-    accounts = await rawProvider.request({ method: "eth_requestAccounts" });
-  } catch (err: any) {
-    // Fallback to standard provider send
-    accounts = await provider.send("eth_requestAccounts", []);
+    const accounts = await rawProvider.request({ method: "eth_accounts" });
+    return accounts || [];
+  } catch (e) {
+    return [];
+  }
+}
+
+let pendingConnectionPromise: Promise<string[]> | null = null;
+
+/**
+ * Single-flight requestAccounts execution to prevent "already pending" or "superseded" errors
+ */
+export async function requestAccountsOnce(rawProvider: any): Promise<string[]> {
+  if (pendingConnectionPromise) {
+    return pendingConnectionPromise;
   }
 
-  if (!accounts || accounts.length === 0) {
-    throw new Error("No accounts authorized by wallet.");
-  }
-
-  const signer = await provider.getSigner();
-  const address = await signer.getAddress();
-
-  // Try network switch gracefully without crashing connection if already on MST Testnet
-  try {
-    const network = await provider.getNetwork();
-    const currentChainId = Number(network.chainId);
-
-    if (
-      currentChainId !== MST_TESTNET_CONFIG.chainIdDecimal &&
-      currentChainId !== MST_TESTNET_CONFIG.legacyChainIdDecimal
-    ) {
-      await switchOrAddMSTTestnet(rawProvider);
+  pendingConnectionPromise = (async () => {
+    try {
+      const accounts = await rawProvider.request({ method: "eth_requestAccounts" });
+      return accounts || [];
+    } catch (err: any) {
+      // If error indicates already pending or superseded, attempt silent fetch
+      if (err.code === -32002 || err.message?.includes("already pending") || err.message?.includes("Superseded")) {
+        const silent = await getSilentlyConnectedAccounts(rawProvider);
+        if (silent && silent.length > 0) {
+          return silent;
+        }
+      }
+      throw err;
+    } finally {
+      pendingConnectionPromise = null;
     }
-  } catch (netErr: any) {
-    console.warn("Network switch notice:", netErr.message);
-  }
+  })();
 
-  return { address, provider, signer };
+  return pendingConnectionPromise;
+}
+
+/**
+ * Converts wallet error codes and messages to user-friendly text
+ */
+export function formatWalletError(err: any): string {
+  if (!err) return "An unexpected error occurred.";
+  const msg = err.message || String(err);
+  if (err.code === 4001 || msg.includes("rejected") || msg.includes("cancelled")) {
+    return "Wallet connection was cancelled.";
+  }
+  if (err.code === -32002 || msg.includes("already pending") || msg.includes("Superseded")) {
+    return "BridgeKey connection is already in progress. Please check your wallet extension popup.";
+  }
+  if (msg.includes("not detected") || msg.includes("extension")) {
+    return "BridgeKey or Web3 wallet extension not detected in this browser.";
+  }
+  return "Unable to connect to BridgeKey. Please try again.";
 }
 
 /**
  * Automatically prompts BridgeKey to switch to or add the MST Testnet
  */
 export async function switchOrAddMSTTestnet(rawProvider: any): Promise<void> {
+  if (!rawProvider || typeof rawProvider.request !== "function") return;
   try {
     await rawProvider.request({
       method: "wallet_switchEthereumChain",
