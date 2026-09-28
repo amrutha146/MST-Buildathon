@@ -1,0 +1,14 @@
+{
+  "recordId": "0x23bdc69f3fd5133ca027977baab4e38a61476b0f4698d25d2287c706ea44d265",
+  "title": "Comprehensive Blood & Lipid Panel",
+  "fileName": "blood_report.txt",
+  "fileType": "text/plain",
+  "fileSize": 224,
+  "patientAddress": "0x94380b852ffd357acea496260296e6caca8f3de3",
+  "fileHash": "0xd1e31ef54581c900147cbb15c753b60d9498bed9066e3686eaf58c5751c6418d",
+  "storagePointer": "enc-store://0x23bdc69f3fd5133ca027977baab4e38a61476b0f4698d25d2287c706ea44d265.enc",
+  "iv": "c42db8ff00719eec9fc4fd13",
+  "authTag": "e349c33b2bf0d86d44af1477ada58d90",
+  "encryptedData": "q6b2wJyHGE+OkSMHvQb2RU2+WBMvOfyeQZqxx4l1cHTTPGQ13rkWDbuxdgllbOHMvrMMda4Fk+L9Mq/ky6KZuSfkfLNSlmBqiwpvyc2fkC48dy+pllnVGgoRtRkRkbWr8vT107axC50YV2Ke0ULpZRb4PfN3kU4VNNxd/YR/9RgSNYkvOpLeU38AOFR/d7ZUkz3isxRuJf1lVJijqHsYdkZR4dJQ8Dzwrxx3PrOfNVytJFbRqGXXrf0bDLMKadLeicZi/FPc5/MgwAruyeX9+3FtNV/Ib2PgvVPjXWiatzA=",
+  "createdAt": "2026-09-28T18:16:41.315Z"
+}
