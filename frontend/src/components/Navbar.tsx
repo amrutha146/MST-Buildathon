@@ -74,7 +74,7 @@ export function Navbar({ account, onConnect, activeTab, setActiveTab }: NavbarPr
           </button>
         </nav>
 
-        {/* Wallet Connect (BridgeKey) */}
+        {/* Wallet Connect (Sovereign Node) */}
         <div className="flex items-center gap-3">
           <a
             href={MST_TESTNET_CONFIG.blockExplorerUrls[0]}
@@ -99,7 +99,7 @@ export function Navbar({ account, onConnect, activeTab, setActiveTab }: NavbarPr
               className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 transition shadow-sm hover:shadow"
             >
               <Wallet className="w-4 h-4" />
-              <span>Connect BridgeKey</span>
+              <span>Connect Signer</span>
             </button>
           )}
         </div>

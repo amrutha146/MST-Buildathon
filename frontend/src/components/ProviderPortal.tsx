@@ -39,7 +39,7 @@ export function ProviderPortal({ account, signer, onTxSuccess }: ProviderPortalP
   const handleRequestAccess = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!account || !signer) {
-      setErrorMessage("Please connect BridgeKey wallet first.");
+      setErrorMessage("Please ensure session is authenticated.");
       return;
     }
     setErrorMessage(null);
@@ -292,7 +292,7 @@ export function ProviderPortal({ account, signer, onTxSuccess }: ProviderPortalP
               ) : (
                 <>
                   <Clock className="w-3.5 h-3.5" />
-                  <span>Sign Access Request with BridgeKey</span>
+                  <span>Sign Access Request on MST</span>
                 </>
               )}
             </button>

@@ -1,0 +1,14 @@
+{
+  "recordId": "0xe9512f1992474a552ffe269a31c693365747c9f65dc4e42d567bf4d431bd3487",
+  "title": "Comprehensive Metabolic & Lipid Panel",
+  "fileName": "blood_panel.txt",
+  "fileType": "text/plain",
+  "fileSize": 343,
+  "patientAddress": "0x94380b852ffd357acea496260296e6caca8f3de3",
+  "fileHash": "0xa1ccb9f3b7a12c5eaa0fd06c0d3c70f3640e9d319eb394b7d9b056cd514da898",
+  "storagePointer": "enc-store://0xe9512f1992474a552ffe269a31c693365747c9f65dc4e42d567bf4d431bd3487.enc",
+  "iv": "f35770a6e8b7eea733825eb5",
+  "authTag": "84298bc9e0476af5bc4d46becbf57403",
+  "encryptedData": "6nn19SzCZ6K2O8kJHdp/+PHMMPgYXo8dhsdUFQfFVuFQnpzpbMc2L3zpJs/ALYq2bdsKYjN3taHsEjpmdoKEfVDa07NP0ySWObMSRqRpa5Bn/eYryRHFpP+blAdCyyDK8OEfA1sswtn+O0r8ytTz1h61Uzd0IQqhXf5CuKzjfeRc+x09j8F31QUcr07BaxmxvAGkRLDXUrf3Ko4UC3jlm4Nmjc4ockJ015Ylo8ew/HuqicQLoATMikEyqtwzarWHnCX6jMslFNP6RMEYEwhravy/pB+x8zK+Xw7YC9+A8wXx2EWjTL/YP49jynzDW7smwyORpOfuXFFazGOLo2nn+GIUt8PCCdP/W9ZhFB6aopVNbig7dyK/gf445W+LhzZCSG/2uWPJSMouRY6Qxpi2bo9R2Mz0Npv6XDrAfT4b0KO7IkYnDrqfYAALEUmAACKIjBmXy2/JEA==",
+  "createdAt": "2026-09-28T21:45:02.936Z"
+}

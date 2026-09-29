@@ -7,13 +7,14 @@ import { useWallet } from "@/context/WalletContext";
 import {
   ShieldCheck,
   UserCheck,
-  Wallet,
   ArrowRight,
   ArrowLeft,
   AlertCircle,
   Loader2,
   CheckCircle2,
   Lock,
+  Smartphone,
+  Sparkles,
 } from "lucide-react";
 
 export default function PatientLoginPage() {
@@ -24,10 +25,11 @@ export default function PatientLoginPage() {
     isAuthenticated,
     isConnecting,
     error,
-    connectWallet,
+    loginPatient,
     clearError,
   } = useWallet();
 
+  const [identifier, setIdentifier] = useState("Rahul Sharma (ABHA #91-8273-1920)");
   const [isSuccess, setIsSuccess] = useState(false);
 
   useEffect(() => {
@@ -36,11 +38,13 @@ export default function PatientLoginPage() {
     }
   }, [isAuthenticated, role, account]);
 
-  const handleConnect = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     clearError();
-    const success = await connectWallet("patient");
+    const success = await loginPatient(identifier);
     if (success) {
       setIsSuccess(true);
+      router.push("/patient");
     }
   };
 
@@ -79,10 +83,10 @@ export default function PatientLoginPage() {
               <UserCheck className="w-7 h-7" />
             </div>
             <h1 className="text-2xl font-black text-slate-950 tracking-tight">
-              Patient Login
+              Patient Sovereign Login
             </h1>
             <p className="mt-2 text-xs text-slate-500 leading-relaxed">
-              Connect your BridgeKey sovereign wallet to securely access and govern your encrypted health records on MST Blockchain.
+              Access your sovereign health vault using your ABHA address or phone number. Encrypted and audited directly on MST Blockchain.
             </p>
           </div>
 
@@ -102,10 +106,10 @@ export default function PatientLoginPage() {
                   <CheckCircle2 className="w-6 h-6 text-emerald-600 shrink-0" />
                   <div className="text-left overflow-hidden">
                     <p className="text-xs font-semibold text-emerald-800">
-                      BridgeKey Wallet Authenticated
+                      Sovereign Vault Authenticated
                     </p>
                     <p className="text-[11px] font-mono text-emerald-900 font-medium truncate">
-                      {account}
+                      {identifier}
                     </p>
                   </div>
                 </div>
@@ -119,30 +123,59 @@ export default function PatientLoginPage() {
                 </button>
               </div>
             ) : (
-              <div className="space-y-4">
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                    ABHA ID / Mobile Number / Name
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                      <Smartphone className="w-4 h-4" />
+                    </div>
+                    <input
+                      type="text"
+                      value={identifier}
+                      onChange={(e) => setIdentifier(e.target.value)}
+                      placeholder="e.g. 9876543210 or user@abdm"
+                      className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:bg-white transition"
+                      required
+                    />
+                  </div>
+                </div>
+
+                {/* Quick Auto-Fill Suggestion Button */}
                 <button
-                  onClick={handleConnect}
+                  type="button"
+                  onClick={() => setIdentifier("Rahul Sharma (ABHA #91-8273-1920)")}
+                  className="w-full py-2 px-3 bg-slate-50 hover:bg-indigo-50/70 border border-slate-200 hover:border-indigo-200 rounded-xl text-[11px] text-slate-600 hover:text-indigo-700 font-medium flex items-center justify-center gap-1.5 transition text-left"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-indigo-500" />
+                  <span>Quick Select: <strong>Rahul Sharma (ABHA #91-8273-1920)</strong></span>
+                </button>
+
+                <button
+                  type="submit"
                   disabled={isConnecting}
                   className="w-full py-3.5 px-4 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-200 disabled:text-slate-400 text-white font-bold rounded-xl text-xs transition shadow-lg shadow-indigo-600/20 flex items-center justify-center gap-2"
                 >
                   {isConnecting ? (
                     <>
                       <Loader2 className="w-4 h-4 animate-spin" />
-                      <span>Connecting to BridgeKey...</span>
+                      <span>Opening Vault...</span>
                     </>
                   ) : (
                     <>
-                      <Wallet className="w-4 h-4" />
-                      <span>Connect BridgeKey</span>
+                      <span>Access Sovereign Patient Vault</span>
+                      <ArrowRight className="w-4 h-4" />
                     </>
                   )}
                 </button>
 
                 <div className="flex items-center justify-center gap-2 text-[11px] text-slate-500 pt-2">
                   <Lock className="w-3.5 h-3.5 text-slate-400" />
-                  <span>No passwords stored. Cryptographic wallet authentication.</span>
+                  <span>Direct cryptographic access. Seamless sovereign vault authentication.</span>
                 </div>
-              </div>
+              </form>
             )}
           </div>
 
@@ -157,7 +190,7 @@ export default function PatientLoginPage() {
 
       {/* Footer */}
       <footer className="py-4 text-center text-xs text-slate-500">
-        MediChain &bull; Patient Sovereign Portal
+        MediChain &bull; Patient Sovereign Portal &bull; Zero Extension Required
       </footer>
     </div>
   );

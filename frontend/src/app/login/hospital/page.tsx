@@ -7,13 +7,14 @@ import { useWallet } from "@/context/WalletContext";
 import {
   ShieldCheck,
   Building2,
-  Wallet,
   ArrowRight,
   ArrowLeft,
   AlertCircle,
   Loader2,
   CheckCircle2,
   Lock,
+  Hospital,
+  Sparkles,
 } from "lucide-react";
 
 export default function HospitalLoginPage() {
@@ -24,10 +25,13 @@ export default function HospitalLoginPage() {
     isAuthenticated,
     isConnecting,
     error,
-    connectWallet,
+    loginHospital,
     clearError,
   } = useWallet();
 
+  const [identifier, setIdentifier] = useState(
+    "Metropolitan Clinical Center (Dr. S. Rao, MD)"
+  );
   const [isSuccess, setIsSuccess] = useState(false);
 
   useEffect(() => {
@@ -36,11 +40,13 @@ export default function HospitalLoginPage() {
     }
   }, [isAuthenticated, role, account]);
 
-  const handleConnect = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     clearError();
-    const success = await connectWallet("hospital");
+    const success = await loginHospital(identifier);
     if (success) {
       setIsSuccess(true);
+      router.push("/hospital");
     }
   };
 
@@ -82,7 +88,7 @@ export default function HospitalLoginPage() {
               Hospital Login
             </h1>
             <p className="mt-2 text-xs text-slate-500 leading-relaxed">
-              Connect your authorized institutional BridgeKey provider node to request patient consent and decrypt authorized clinical records.
+              Authenticate your authorized institutional clinical terminal to request patient consent and view decrypted records on MST Blockchain.
             </p>
           </div>
 
@@ -105,7 +111,7 @@ export default function HospitalLoginPage() {
                       Hospital Node Authenticated
                     </p>
                     <p className="text-[11px] font-mono text-cyan-950 font-medium truncate">
-                      {account}
+                      {identifier}
                     </p>
                   </div>
                 </div>
@@ -119,21 +125,52 @@ export default function HospitalLoginPage() {
                 </button>
               </div>
             ) : (
-              <div className="space-y-4">
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                    Institution Name / Department / ID
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                      <Hospital className="w-4 h-4" />
+                    </div>
+                    <input
+                      type="text"
+                      value={identifier}
+                      onChange={(e) => setIdentifier(e.target.value)}
+                      placeholder="e.g. Apollo Hospital, Cardiology"
+                      className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-cyan-500 focus:bg-white transition"
+                      required
+                    />
+                  </div>
+                </div>
+
+                {/* Quick Auto-Fill Suggestion Button */}
                 <button
-                  onClick={handleConnect}
+                  type="button"
+                  onClick={() =>
+                    setIdentifier("Metropolitan Clinical Center (Dr. S. Rao, MD)")
+                  }
+                  className="w-full py-2 px-3 bg-slate-50 hover:bg-cyan-50/70 border border-slate-200 hover:border-cyan-200 rounded-xl text-[11px] text-slate-600 hover:text-cyan-700 font-medium flex items-center justify-center gap-1.5 transition text-left"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-cyan-600" />
+                  <span>Quick Select: <strong>Dr. S. Rao (Metropolitan Clinical Center)</strong></span>
+                </button>
+
+                <button
+                  type="submit"
                   disabled={isConnecting}
                   className="w-full py-3.5 px-4 bg-cyan-600 hover:bg-cyan-700 disabled:bg-slate-200 disabled:text-slate-400 text-white font-bold rounded-xl text-xs transition shadow-lg shadow-cyan-600/20 flex items-center justify-center gap-2"
                 >
                   {isConnecting ? (
                     <>
                       <Loader2 className="w-4 h-4 animate-spin" />
-                      <span>Connecting to BridgeKey...</span>
+                      <span>Authenticating Node...</span>
                     </>
                   ) : (
                     <>
-                      <Wallet className="w-4 h-4" />
-                      <span>Connect BridgeKey</span>
+                      <span>Access Clinical Terminal</span>
+                      <ArrowRight className="w-4 h-4" />
                     </>
                   )}
                 </button>
@@ -142,7 +179,7 @@ export default function HospitalLoginPage() {
                   <Lock className="w-3.5 h-3.5 text-slate-400" />
                   <span>On-chain provider authorization validated against smart contract.</span>
                 </div>
-              </div>
+              </form>
             )}
           </div>
 
@@ -157,7 +194,7 @@ export default function HospitalLoginPage() {
 
       {/* Footer */}
       <footer className="py-4 text-center text-xs text-slate-500">
-        MediChain &bull; Hospital &amp; Healthcare Provider Terminal
+        MediChain &bull; Hospital &amp; Healthcare Provider Terminal &bull; Automated Sovereign Cryptographic Node
       </footer>
     </div>
   );

@@ -25,6 +25,7 @@ export default function PatientDashboard() {
   const router = useRouter();
   const {
     account,
+    displayName,
     signer,
     role,
     isAuthenticated,
@@ -90,7 +91,7 @@ export default function PatientDashboard() {
   const handleUpload = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!account || !signer) {
-      setError("Please connect your wallet first.");
+      setError("Session expired. Please log in again.");
       return;
     }
     setUploadLoading(true);
@@ -210,14 +211,19 @@ STATUS: STABLE - DIETARY MODIFICATION RECOMMENDED`;
 
           <div className="flex items-center gap-3">
             {/* Connected Account Pill */}
-            {account && (
+            {displayName ? (
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-100 rounded-xl text-xs font-semibold text-slate-800 border border-slate-200">
+                <div className="w-2 h-2 rounded-full bg-emerald-500" />
+                <span>{displayName}</span>
+              </div>
+            ) : account ? (
               <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-100 rounded-xl text-xs font-mono text-slate-700 border border-slate-200">
                 <div className="w-2 h-2 rounded-full bg-emerald-500" />
                 <span>
                   {account.slice(0, 6)}...{account.slice(-4)}
                 </span>
               </div>
-            )}
+            ) : null}
 
             {/* Logout Button */}
             <button

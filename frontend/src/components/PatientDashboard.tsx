@@ -86,7 +86,7 @@ export function PatientDashboard({ account, signer, onTxSuccess }: PatientDashbo
   const handleUploadAndRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!account || !signer) {
-      setError("Please connect your BridgeKey wallet first.");
+      setError("Please ensure session is authenticated.");
       return;
     }
     setError(null);

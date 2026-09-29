@@ -26,123 +26,22 @@ export function getContractAddress(): string {
 }
 
 /**
- * Returns the EIP-1193 provider injected by BridgeKey or standard Web3 wallet
+ * Direct JSON-RPC Provider for MST Testnet (Zero Extension Required)
  */
-export function getBridgeKeyProvider(): any {
-  if (typeof window === "undefined") return null;
-
-  const w = window as any;
-
-  // 1. Explicit BridgeKey provider injection
-  if (w.bridgekey) return w.bridgekey;
-  if (w.bridgeKey) return w.bridgeKey;
-
-  // 2. Multi-provider array (e.g. if multiple wallets installed)
-  if (w.ethereum?.providers && Array.isArray(w.ethereum.providers)) {
-    const bk = w.ethereum.providers.find(
-      (p: any) => p.isBridgeKey || p.name?.toLowerCase().includes("bridgekey")
-    );
-    if (bk) return bk;
-  }
-
-  // 3. Standard window.ethereum injection
-  if (w.ethereum) return w.ethereum;
-
-  return null;
+export function getMSTProvider(): ethers.JsonRpcProvider {
+  return new ethers.JsonRpcProvider(MST_TESTNET_CONFIG.rpcUrls[0]);
 }
 
 /**
- * Checks for already-authorized accounts silently without opening a wallet popup
+ * Pre-funded Sovereign Signer for gasless instant patient & hospital interactions on MST Testnet
  */
-export async function getSilentlyConnectedAccounts(rawProvider: any): Promise<string[]> {
-  if (!rawProvider || typeof rawProvider.request !== "function") return [];
-  try {
-    const accounts = await rawProvider.request({ method: "eth_accounts" });
-    return accounts || [];
-  } catch (e) {
-    return [];
-  }
-}
+export const DEFAULT_SOVEREIGN_KEY =
+  process.env.NEXT_PUBLIC_SOVEREIGN_KEY ||
+  "0x5f7ac2649d3117dc25b82726a868760126ad5a40a400a2c081d1b61221b04f66";
 
-let pendingConnectionPromise: Promise<string[]> | null = null;
-
-/**
- * Single-flight requestAccounts execution to prevent "already pending" or "superseded" errors
- */
-export async function requestAccountsOnce(rawProvider: any): Promise<string[]> {
-  if (pendingConnectionPromise) {
-    return pendingConnectionPromise;
-  }
-
-  pendingConnectionPromise = (async () => {
-    try {
-      const accounts = await rawProvider.request({ method: "eth_requestAccounts" });
-      return accounts || [];
-    } catch (err: any) {
-      // If error indicates already pending or superseded, attempt silent fetch
-      if (err.code === -32002 || err.message?.includes("already pending") || err.message?.includes("Superseded")) {
-        const silent = await getSilentlyConnectedAccounts(rawProvider);
-        if (silent && silent.length > 0) {
-          return silent;
-        }
-      }
-      throw err;
-    } finally {
-      pendingConnectionPromise = null;
-    }
-  })();
-
-  return pendingConnectionPromise;
-}
-
-/**
- * Converts wallet error codes and messages to user-friendly text
- */
-export function formatWalletError(err: any): string {
-  if (!err) return "An unexpected error occurred.";
-  const msg = err.message || String(err);
-  if (err.code === 4001 || msg.includes("rejected") || msg.includes("cancelled")) {
-    return "Wallet connection was cancelled.";
-  }
-  if (err.code === -32002 || msg.includes("already pending") || msg.includes("Superseded")) {
-    return "BridgeKey connection is already in progress. Please check your wallet extension popup.";
-  }
-  if (msg.includes("not detected") || msg.includes("extension")) {
-    return "BridgeKey or Web3 wallet extension not detected in this browser.";
-  }
-  return "Unable to connect to BridgeKey. Please try again.";
-}
-
-/**
- * Automatically prompts BridgeKey to switch to or add the MST Testnet
- */
-export async function switchOrAddMSTTestnet(rawProvider: any): Promise<void> {
-  if (!rawProvider || typeof rawProvider.request !== "function") return;
-  try {
-    await rawProvider.request({
-      method: "wallet_switchEthereumChain",
-      params: [{ chainId: MST_TESTNET_CONFIG.chainIdHex }],
-    });
-  } catch (switchError: any) {
-    if (
-      switchError.code === 4902 ||
-      switchError?.data?.originalError?.code === 4902 ||
-      switchError.message?.includes("Unrecognized chain ID")
-    ) {
-      await rawProvider.request({
-        method: "wallet_addEthereumChain",
-        params: [
-          {
-            chainId: MST_TESTNET_CONFIG.chainIdHex,
-            chainName: MST_TESTNET_CONFIG.chainName,
-            rpcUrls: MST_TESTNET_CONFIG.rpcUrls,
-            nativeCurrency: MST_TESTNET_CONFIG.nativeCurrency,
-            blockExplorerUrls: MST_TESTNET_CONFIG.blockExplorerUrls,
-          },
-        ],
-      });
-    }
-  }
+export function getEmbeddedSigner(): ethers.Wallet {
+  const provider = getMSTProvider();
+  return new ethers.Wallet(DEFAULT_SOVEREIGN_KEY, provider);
 }
 
 /**
