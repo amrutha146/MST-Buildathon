@@ -17,6 +17,7 @@ export async function POST(req: NextRequest) {
     const file = formData.get("file") as File | null;
     const patientAddress = formData.get("patientAddress") as string | null;
     const title = (formData.get("title") as string) || "Medical Record";
+    const patientName = (formData.get("patientName") as string) || "Rahul Sharma (ABHA #91-8273-1920)";
 
     if (!file || !patientAddress) {
       return NextResponse.json(
@@ -39,6 +40,7 @@ export async function POST(req: NextRequest) {
     const payloadToStore = {
       recordId,
       title,
+      patientName,
       fileName: file.name,
       fileType: file.type || "application/pdf",
       fileSize: fileBuffer.length,

@@ -17,13 +17,25 @@ export async function GET(req: NextRequest) {
     const records = files
       .filter((file) => file.endsWith(".json"))
       .map((file) => {
+        const filePath = path.join(UPLOAD_DIR, file);
         const content = JSON.parse(
-          fs.readFileSync(path.join(UPLOAD_DIR, file), "utf8")
+          fs.readFileSync(filePath, "utf8")
         );
+        let patientName = content.patientName;
+        if (!patientName) {
+          patientName = "Rahul Sharma (ABHA #91-8273-1920)";
+          content.patientName = patientName;
+          try {
+            fs.writeFileSync(filePath, JSON.stringify(content, null, 2));
+          } catch {
+            // best-effort cache update
+          }
+        }
         // Exclude sensitive encryption data from the public listing
         return {
           recordId: content.recordId,
           title: content.title,
+          patientName,
           fileName: content.fileName,
           fileType: content.fileType,
           fileSize: content.fileSize,

@@ -115,6 +115,7 @@ STATUS: STABLE - DIETARY MODIFICATION RECOMMENDED`;
       formData.append("file", file);
       formData.append("patientAddress", account);
       formData.append("title", uploadTitle);
+      formData.append("patientName", displayName || "Rahul Sharma (ABHA #91-8273-1920)");
 
       const res = await fetch("/api/records/upload", { method: "POST", body: formData });
       const data = await res.json();

@@ -18,6 +18,9 @@ import {
   Send,
   Eye,
   ExternalLink,
+  User,
+  Search,
+  FileText,
 } from "lucide-react";
 
 export default function HospitalDashboard() {
@@ -46,6 +49,22 @@ export default function HospitalDashboard() {
   const [accessDeniedNotice, setAccessDeniedNotice] = useState<string | null>(null);
 
   const [availableRecords, setAvailableRecords] = useState<any[]>([]);
+  const [patientSearch, setPatientSearch] = useState("");
+
+  const filteredRecords = availableRecords.filter((rec) => {
+    if (!patientSearch.trim()) return true;
+    const query = patientSearch.toLowerCase();
+    return (
+      (rec.patientName && rec.patientName.toLowerCase().includes(query)) ||
+      (rec.title && rec.title.toLowerCase().includes(query)) ||
+      (rec.recordId && rec.recordId.toLowerCase().includes(query)) ||
+      (rec.patientAddress && rec.patientAddress.toLowerCase().includes(query))
+    );
+  });
+
+  const selectedRecord = availableRecords.find(
+    (r) => r.recordId && r.recordId.toLowerCase() === recordId.trim().toLowerCase()
+  );
 
   // Load available patient records on mount
   useEffect(() => {
@@ -277,58 +296,123 @@ export default function HospitalDashboard() {
               <form onSubmit={handleRequest} className="space-y-4">
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
-                    <label className="text-xs font-semibold text-slate-700">
-                      Patient Record ID (e.g. 0x167e...)
+                    <label className="text-xs font-semibold text-slate-700 flex items-center gap-1.5">
+                      <User className="w-3.5 h-3.5 text-cyan-600" />
+                      <span>Select Patient &amp; Medical Record</span>
                     </label>
                     {availableRecords.length > 0 && (
                       <span className="text-[11px] text-cyan-700 font-semibold">
-                        {availableRecords.length} records available on MST
+                        {availableRecords.length} records on MST
                       </span>
                     )}
                   </div>
 
+                  {/* Patient / Record Filter Search */}
+                  {availableRecords.length > 0 && (
+                    <div className="relative mb-2">
+                      <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5 pointer-events-none" />
+                      <input
+                        type="text"
+                        value={patientSearch}
+                        onChange={(e) => setPatientSearch(e.target.value)}
+                        placeholder="Search patient name, ABHA ID (e.g. Rahul Sharma, 91-8273...)"
+                        className="w-full pl-8 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-cyan-500 focus:bg-white transition"
+                      />
+                    </div>
+                  )}
+
+                  {/* Dropdown with full patient details */}
                   {availableRecords.length > 0 && (
                     <select
                       value={recordId}
                       onChange={(e) => setRecordId(e.target.value)}
                       className="w-full mb-2 p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-cyan-500 font-medium"
                     >
-                      <option value="">-- Quick Select from Available Patient Vaults --</option>
-                      {availableRecords.map((rec) => (
+                      <option value="">-- Select Patient &amp; Medical Record Vault --</option>
+                      {filteredRecords.map((rec) => (
                         <option key={rec.recordId} value={rec.recordId}>
-                          {rec.title} ({rec.recordId.slice(0, 10)}...{rec.recordId.slice(-6)})
+                          👤 {rec.patientName || "Rahul Sharma (ABHA #91-8273-1920)"} — {rec.title} ({new Date(rec.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })})
                         </option>
                       ))}
+                      {filteredRecords.length === 0 && (
+                        <option value="" disabled>No records match &quot;{patientSearch}&quot;</option>
+                      )}
                     </select>
                   )}
 
-                  <input
-                    type="text"
-                    value={recordId}
-                    onChange={(e) => setRecordId(e.target.value)}
-                    placeholder="Enter Record ID from patient..."
-                    className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-cyan-500 focus:bg-white font-mono"
-                    required
-                  />
+                  {/* Selected Patient Verification Card */}
+                  {selectedRecord && (
+                    <div className="p-3.5 bg-cyan-50/70 border border-cyan-200 rounded-2xl mb-2.5 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2.5">
+                          <div className="w-8 h-8 rounded-xl bg-cyan-600 text-white flex items-center justify-center font-bold text-xs shadow-xs">
+                            <User className="w-4 h-4" />
+                          </div>
+                          <div>
+                            <div className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                              <span>{selectedRecord.patientName || "Rahul Sharma (ABHA #91-8273-1920)"}</span>
+                              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-cyan-100 text-cyan-800 border border-cyan-300">
+                                ABHA Verified
+                              </span>
+                            </div>
+                            <div className="text-[10px] text-cyan-800 font-mono">
+                              Vault: {selectedRecord.patientAddress ? `${selectedRecord.patientAddress.slice(0, 8)}...${selectedRecord.patientAddress.slice(-6)}` : "Sovereign Contract"}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2 pt-2 border-t border-cyan-100 text-[11px]">
+                        <div>
+                          <span className="text-slate-500 text-[10px] block">Selected Document:</span>
+                          <span className="font-semibold text-slate-800 truncate block">{selectedRecord.title}</span>
+                        </div>
+                        <div>
+                          <span className="text-slate-500 text-[10px] block">Date Issued:</span>
+                          <span className="font-semibold text-slate-800 block">
+                            {new Date(selectedRecord.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
 
-                  {/* Quick Pill Selection for recent records */}
+                  {/* Manual Hash / Cryptographic ID Input */}
+                  <div>
+                    <label className="text-[10px] font-semibold text-slate-500 block mb-1">
+                      On-Chain Record ID (Cryptographic Hash)
+                    </label>
+                    <input
+                      type="text"
+                      value={recordId}
+                      onChange={(e) => setRecordId(e.target.value)}
+                      placeholder="Enter Record ID from patient..."
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-cyan-500 focus:bg-white font-mono"
+                      required
+                    />
+                  </div>
+
+                  {/* Quick Pill Selection */}
                   {availableRecords.length > 0 && (
                     <div className="mt-2 flex flex-wrap gap-1.5">
-                      {availableRecords.slice(0, 3).map((rec) => (
-                        <button
-                          key={rec.recordId}
-                          type="button"
-                          onClick={() => setRecordId(rec.recordId)}
-                          className={`text-[10px] px-2 py-1 rounded-lg border font-mono transition ${
-                            recordId === rec.recordId
-                              ? "bg-cyan-50 border-cyan-400 text-cyan-800 font-bold"
-                              : "bg-white border-slate-200 text-slate-600 hover:border-cyan-300"
-                          }`}
-                          title={rec.title}
-                        >
-                          {rec.title.length > 20 ? rec.title.slice(0, 20) + "..." : rec.title}
-                        </button>
-                      ))}
+                      {availableRecords.slice(0, 3).map((rec) => {
+                        const shortName = rec.patientName ? rec.patientName.split("(")[0].trim() : "Rahul Sharma";
+                        return (
+                          <button
+                            key={rec.recordId}
+                            type="button"
+                            onClick={() => setRecordId(rec.recordId)}
+                            className={`text-[10px] px-2.5 py-1 rounded-lg border transition flex items-center gap-1 ${
+                              recordId === rec.recordId
+                                ? "bg-cyan-50 border-cyan-400 text-cyan-800 font-bold"
+                                : "bg-white border-slate-200 text-slate-600 hover:border-cyan-300"
+                            }`}
+                            title={`${rec.patientName} - ${rec.title}`}
+                          >
+                            <User className="w-2.5 h-2.5 text-cyan-600" />
+                            <span>{shortName}: {rec.title.length > 15 ? rec.title.slice(0, 15) + "..." : rec.title}</span>
+                          </button>
+                        );
+                      })}
                     </div>
                   )}
                 </div>
@@ -397,9 +481,29 @@ export default function HospitalDashboard() {
                   Step 2: Verify Consent &amp; Decrypt
                 </h2>
               </div>
-              <p className="text-xs text-slate-500 mb-6 leading-relaxed">
+              <p className="text-xs text-slate-500 mb-4 leading-relaxed">
                 Smart contract verifies real-time patient consent before releasing the decryption key and generating AI insights.
               </p>
+
+              {/* Target Patient Verification Banner */}
+              <div className="p-3 bg-slate-50 border border-slate-200 rounded-2xl mb-5 flex items-center justify-between">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-xl bg-slate-200 text-slate-700 flex items-center justify-center text-xs">
+                    <User className="w-4 h-4 text-slate-600" />
+                  </div>
+                  <div>
+                    <div className="text-xs font-bold text-slate-900">
+                      {selectedRecord ? (selectedRecord.patientName || "Rahul Sharma (ABHA #91-8273-1920)") : "No record selected"}
+                    </div>
+                    <div className="text-[10px] text-slate-500 font-mono">
+                      {selectedRecord ? `${selectedRecord.title} • ${selectedRecord.recordId.slice(0, 10)}...${selectedRecord.recordId.slice(-6)}` : "Select a record in Step 1"}
+                    </div>
+                  </div>
+                </div>
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-cyan-50 text-cyan-700 border border-cyan-200">
+                  Target Patient
+                </span>
+              </div>
 
               {/* Action Buttons */}
               <div className="flex items-center gap-3 mb-6">

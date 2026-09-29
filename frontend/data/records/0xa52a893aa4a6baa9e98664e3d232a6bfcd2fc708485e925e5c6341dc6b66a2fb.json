@@ -1,0 +1,15 @@
+{
+  "recordId": "0xa52a893aa4a6baa9e98664e3d232a6bfcd2fc708485e925e5c6341dc6b66a2fb",
+  "title": "Comprehensive Metabolic & Lipid Panel",
+  "fileName": "blood_panel.txt",
+  "fileType": "text/plain",
+  "fileSize": 343,
+  "patientAddress": "0x66d21972ecb8656e6a6e06505f4bd652c035e2ec",
+  "fileHash": "0x340dd81fedd155c81f362eb247a4973c0b6bbc66148b2b828fe31ed213aa5eb1",
+  "storagePointer": "enc-store://0xa52a893aa4a6baa9e98664e3d232a6bfcd2fc708485e925e5c6341dc6b66a2fb.enc",
+  "iv": "ddc5ed567bc33c53a995ac12",
+  "authTag": "eaf6444148d044645e4e321eab6b5e68",
+  "encryptedData": "iPLTsiuAytjA/dROQorastS1HwPNwzxaa0RWl0bKToJtjluIcR8uNOQtAmZhZxLN7QKd/i94AQE0+i1TqcTtT3Tp8dhn5vB6sTtSsTCj2N1MXo9enr76AOjb1xIAyREvgEPdygsDMsKSUON3WwjLDVpMumoK6fiXfNxzsIarmFaeJNHbbE437nTayma1OZcy2pnrYO64ajVaTwOSRDfKrVO+LkDx2q5BofDmy/+9U06aWQCtF0ntCq2HWFcG+Gg7OiVhzYwZzVHmYdUCQ8ltS1+HHR3oqU5GZHjeqcQuUGiG9Ro8LYqRtdFDLCqxC3Is/dR/3pVy/DdDlaJZ+zGuFPeFKqQrpx9FrseOMiEjUWX26AYFAGZ5BljKHNNevurNjh8Zas9NJgSUzaXXkVwqS4S/bl1zgGIA2UjTgsLzjVVKHp0nQyCOTFVN7LBnMZw2vaO22lPiiA==",
+  "createdAt": "2026-09-29T03:42:08.585Z",
+  "patientName": "Rahul Sharma (ABHA #91-8273-1920)"
+}
