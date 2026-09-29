@@ -17,6 +17,7 @@ import {
   LogOut,
   Send,
   Eye,
+  ExternalLink,
 } from "lucide-react";
 
 export default function HospitalDashboard() {
@@ -434,13 +435,24 @@ export default function HospitalDashboard() {
                 </button>
               </div>
 
-              {/* 403 Access Denied Notice */}
+              {/* 403 Access Denied Notice with Direct Helper for Evaluators */}
               {accessDeniedNotice && (
                 <div className="p-4 bg-rose-50 border border-rose-200 rounded-2xl text-rose-800 text-xs flex items-start gap-3 mb-4">
                   <ShieldX className="w-5 h-5 mt-0.5 text-rose-600 shrink-0" />
-                  <div className="space-y-1">
+                  <div className="space-y-2 flex-1">
                     <p className="font-bold text-rose-900">Consent Gated Access Control</p>
                     <p className="leading-relaxed text-[11px] text-rose-700">{accessDeniedNotice}</p>
+                    <div className="pt-1">
+                      <a
+                        href="/login/patient"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-rose-300 hover:border-rose-400 text-rose-800 font-bold rounded-xl text-[11px] transition shadow-xs hover:shadow"
+                      >
+                        <span>👉 Open Patient Vault in New Tab to Approve Consent</span>
+                        <ExternalLink className="w-3 h-3" />
+                      </a>
+                    </div>
                   </div>
                 </div>
               )}
@@ -465,14 +477,77 @@ export default function HospitalDashboard() {
 
               {/* AI Clinical Brief Display */}
               {aiSummary && (
-                <div className="mt-4 p-4 bg-violet-50 border border-violet-200 rounded-2xl space-y-2">
-                  <div className="flex items-center gap-2 text-violet-800 text-xs font-bold">
-                    <Sparkles className="w-4 h-4 text-violet-600" />
-                    <span>AI Clinical Intelligence Summary</span>
+                <div className="mt-4 p-5 bg-gradient-to-br from-violet-50 via-purple-50 to-indigo-50 border border-violet-200 rounded-2xl space-y-3.5 shadow-sm">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2 text-violet-900 text-xs font-bold">
+                      <Sparkles className="w-4 h-4 text-violet-600" />
+                      <span>AI Clinical Intelligence Brief</span>
+                    </div>
+                    <span className="text-[10px] font-semibold px-2.5 py-0.5 rounded-full bg-violet-100 text-violet-800 border border-violet-200">
+                      Smart-Contract Gated
+                    </span>
                   </div>
-                  <p className="text-xs text-violet-900 leading-relaxed">
-                    {aiSummary.summary || JSON.stringify(aiSummary)}
-                  </p>
+
+                  {aiSummary.recordTitle && (
+                    <div className="text-xs text-slate-800">
+                      <span className="font-semibold text-slate-900">Analyzed Record:</span>{" "}
+                      <span className="font-medium text-violet-900">{aiSummary.recordTitle}</span>
+                    </div>
+                  )}
+
+                  {/* Highlights Bullet Points */}
+                  {Array.isArray(aiSummary.highlights) && aiSummary.highlights.length > 0 && (
+                    <div className="space-y-1.5">
+                      <p className="text-[11px] font-bold text-violet-950 uppercase tracking-wide">
+                        Key Clinical Observations:
+                      </p>
+                      <ul className="space-y-1.5">
+                        {aiSummary.highlights.map((highlight: string, idx: number) => (
+                          <li
+                            key={idx}
+                            className="text-xs text-slate-700 flex items-start gap-2 leading-relaxed"
+                          >
+                            <span className="w-1.5 h-1.5 rounded-full bg-violet-600 mt-1.5 shrink-0" />
+                            <span>{highlight}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {/* Suggested Medications / Interventions */}
+                  {Array.isArray(aiSummary.suggestedMedications) && aiSummary.suggestedMedications.length > 0 && (
+                    <div className="space-y-1.5 pt-2 border-t border-violet-200/60">
+                      <p className="text-[11px] font-bold text-violet-950 uppercase tracking-wide">
+                        Suggested Pharmacotherapy:
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {aiSummary.suggestedMedications.map((med: any, idx: number) => (
+                          <div
+                            key={idx}
+                            className="px-2.5 py-1.5 bg-white border border-violet-200 rounded-xl text-xs text-violet-950 shadow-xs flex items-center gap-1.5"
+                          >
+                            <span className="font-bold text-violet-800">{med.name}</span>
+                            <span className="text-slate-500 font-mono text-[11px]">({med.dosage})</span>
+                            {med.note && <span className="text-[10px] text-slate-500">&bull; {med.note}</span>}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Fallback if string */}
+                  {typeof aiSummary === "string" && (
+                    <p className="text-xs text-slate-700 leading-relaxed">{aiSummary}</p>
+                  )}
+
+                  {/* Compliance & Attestation Note */}
+                  {aiSummary.complianceNote && (
+                    <div className="pt-2 border-t border-violet-200/60 text-[10px] text-slate-500 flex items-center gap-1.5">
+                      <CheckCircle className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                      <span>{aiSummary.complianceNote}</span>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
