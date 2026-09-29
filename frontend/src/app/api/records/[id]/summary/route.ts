@@ -24,10 +24,23 @@ export async function POST(
       );
     }
 
-    const filePath = path.join(UPLOAD_DIR, `${recordId}.json`);
+    const cleanId = recordId.trim().replace(/\.enc$/i, "");
+    let filePath = path.join(UPLOAD_DIR, `${cleanId}.json`);
+    if (!fs.existsSync(filePath)) {
+      if (fs.existsSync(UPLOAD_DIR)) {
+        const files = fs.readdirSync(UPLOAD_DIR);
+        const match = files.find(
+          (f) => f.toLowerCase() === `${cleanId.toLowerCase()}.json`
+        );
+        if (match) {
+          filePath = path.join(UPLOAD_DIR, match);
+        }
+      }
+    }
+
     if (!fs.existsSync(filePath)) {
       return NextResponse.json(
-        { error: "Record not found in storage." },
+        { error: `Record ${cleanId.slice(0, 10)}... not found in storage.` },
         { status: 404 }
       );
     }

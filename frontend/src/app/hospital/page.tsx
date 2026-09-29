@@ -44,6 +44,27 @@ export default function HospitalDashboard() {
   const [aiSummary, setAiSummary] = useState<any | null>(null);
   const [accessDeniedNotice, setAccessDeniedNotice] = useState<string | null>(null);
 
+  const [availableRecords, setAvailableRecords] = useState<any[]>([]);
+
+  // Load available patient records on mount
+  useEffect(() => {
+    async function loadRecords() {
+      try {
+        const res = await fetch("/api/records/list");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.records && data.records.length > 0) {
+            setAvailableRecords(data.records);
+            setRecordId((prev) => (prev ? prev : data.records[0].recordId));
+          }
+        }
+      } catch (e) {
+        console.warn("Failed to load records list:", e);
+      }
+    }
+    loadRecords();
+  }, []);
+
   // Route protection
   useEffect(() => {
     if (isInitialized && (!isAuthenticated || role !== "hospital")) {
@@ -92,7 +113,7 @@ export default function HospitalDashboard() {
 
       if (!hasAccess) {
         setAccessDeniedNotice(
-          "🛑 403 Access Denied: The patient has not granted consent for this record yet (or the time-decay duration has expired). Patient must grant consent from their Patient Portal."
+          "🛑 403 Access Denied: The patient has not granted consent for this record yet (or the time-decay duration has expired). Please switch to the Patient Portal to approve this pending request."
         );
         setDecryptedData(null);
         return;
@@ -104,8 +125,16 @@ export default function HospitalDashboard() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ providerAddress: account }),
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
+
+      const rawText = await res.text();
+      let data: any = {};
+      try {
+        data = JSON.parse(rawText);
+      } catch {
+        throw new Error(rawText || `Server returned error (${res.status})`);
+      }
+
+      if (!res.ok) throw new Error(data.error || "Decryption failed.");
 
       setDecryptedData(atob(data.dataBase64));
       setNotice("Access verified on MST Blockchain! Report successfully decrypted.");
@@ -131,8 +160,16 @@ export default function HospitalDashboard() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ providerAddress: account }),
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
+
+      const rawText = await res.text();
+      let data: any = {};
+      try {
+        data = JSON.parse(rawText);
+      } catch {
+        throw new Error(rawText || `Server returned error (${res.status})`);
+      }
+
+      if (!res.ok) throw new Error(data.error || "AI summary blocked.");
 
       setAiSummary(data.summary);
     } catch (err: any) {
@@ -238,9 +275,32 @@ export default function HospitalDashboard() {
 
               <form onSubmit={handleRequest} className="space-y-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                    Patient Record ID (e.g. 0x167e...)
-                  </label>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label className="text-xs font-semibold text-slate-700">
+                      Patient Record ID (e.g. 0x167e...)
+                    </label>
+                    {availableRecords.length > 0 && (
+                      <span className="text-[11px] text-cyan-700 font-semibold">
+                        {availableRecords.length} records available on MST
+                      </span>
+                    )}
+                  </div>
+
+                  {availableRecords.length > 0 && (
+                    <select
+                      value={recordId}
+                      onChange={(e) => setRecordId(e.target.value)}
+                      className="w-full mb-2 p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-cyan-500 font-medium"
+                    >
+                      <option value="">-- Quick Select from Available Patient Vaults --</option>
+                      {availableRecords.map((rec) => (
+                        <option key={rec.recordId} value={rec.recordId}>
+                          {rec.title} ({rec.recordId.slice(0, 10)}...{rec.recordId.slice(-6)})
+                        </option>
+                      ))}
+                    </select>
+                  )}
+
                   <input
                     type="text"
                     value={recordId}
@@ -249,20 +309,27 @@ export default function HospitalDashboard() {
                     className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-cyan-500 focus:bg-white font-mono"
                     required
                   />
-                  <p className="text-[10px] text-slate-500 mt-1">
-                    Genesis Demo Record ID:{" "}
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setRecordId(
-                          "0x167ec4c6ae92e1069818b2c453b3dfa32ba0b3ecde441d017a5996bdfdb8a939"
-                        )
-                      }
-                      className="text-cyan-700 font-semibold hover:underline font-mono"
-                    >
-                      0x167e...a939
-                    </button>
-                  </p>
+
+                  {/* Quick Pill Selection for recent records */}
+                  {availableRecords.length > 0 && (
+                    <div className="mt-2 flex flex-wrap gap-1.5">
+                      {availableRecords.slice(0, 3).map((rec) => (
+                        <button
+                          key={rec.recordId}
+                          type="button"
+                          onClick={() => setRecordId(rec.recordId)}
+                          className={`text-[10px] px-2 py-1 rounded-lg border font-mono transition ${
+                            recordId === rec.recordId
+                              ? "bg-cyan-50 border-cyan-400 text-cyan-800 font-bold"
+                              : "bg-white border-slate-200 text-slate-600 hover:border-cyan-300"
+                          }`}
+                          title={rec.title}
+                        >
+                          {rec.title.length > 20 ? rec.title.slice(0, 20) + "..." : rec.title}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 <div>
