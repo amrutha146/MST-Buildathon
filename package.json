@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "Patient-controlled consent and access-audit layer on MST Blockchain",
   "scripts": {
+    "postinstall": "npm install --prefix frontend",
     "dev": "npm run dev --prefix frontend",
-    "build": "npm run build --prefix frontend",
+    "build": "cd frontend && npm install && npm run build",
     "start": "npm start --prefix frontend",
     "test:contracts": "npm test --prefix contracts",
     "deploy:contracts": "npm run deploy --prefix contracts"
