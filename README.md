@@ -6,9 +6,8 @@
 
 ## 🌐 Live Deployments & Application Links
 
-* **Live Demo URL:** [https://tribes-formatting-write-tap.trycloudflare.com](https://tribes-formatting-write-tap.trycloudflare.com) *(Instant Cloudflare Edge Deployment &bull; No Password Needed)*
+* **Live Demo URL:** [https://auto-berkeley-contest-radar.trycloudflare.com](https://auto-berkeley-contest-radar.trycloudflare.com) *(Instant Cloudflare Edge Deployment &bull; No Extension Needed)*
 * **GitHub Repository:** [https://github.com/amrutha146/MST-Buildathon](https://github.com/amrutha146/MST-Buildathon)
-* **1-Click Cloud Deployment (Vercel):** [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Famrutha146%2FMST-Buildathon&root-directory=frontend)
 * **Localhost:** [http://localhost:3000](http://localhost:3000)
 
 ---
@@ -36,7 +35,7 @@ Modern health record systems either lock patient data into proprietary hospital 
 * **Patient-Controlled Time-Decay Grants:** Patients explicitly approve or reject access requests from healthcare providers with custom validity windows (e.g., 1 hour, 24 hours). Expiry is mathematically enforced on-chain via `block.timestamp < expiryTimestamp`.
 * **Tamper-Evident Access Audit:** Every time a health record is decrypted or accessed by an authorized provider, an immutable on-chain event (`AccessLogged`) is emitted.
 * **Gated AI Clinical Assistant:** An integrated clinical summary agent is cryptographically restricted from analyzing records unless an active on-chain consent grant is verified (`hasAccess() == true`).
-* **Centralized BridgeKey Wallet Architecture:** One root `WalletProvider` handles connection state once per session with silent session recovery (`eth_accounts`), single-flight concurrency locking, and persistent role-based routing.
+* **Sovereign Embedded Signer:** Direct, frictionless login (ABHA ID / Mobile for Patient, Hospital ID for Provider) backed by an embedded cryptographic signer without requiring browser extensions or wallet popups.
 
 ---
 
@@ -51,12 +50,12 @@ Modern health record systems either lock patient data into proprietary hospital 
            |             |             |
      /login/patient /login/hospital /login/admin
            |             |             |
-        Connect       Connect       Passkey
-       BridgeKey     BridgeKey    (DEMO Mode)
+        ABHA ID      Doctor ID      Passkey
+      (Rahul Sharma)  (Dr. Rao)    (MST2026)
            |             |             |
            ↓             ↓             ↓
        /patient      /hospital      /admin
-      (Dashboard)   (Dashboard)   (Dashboard)
+      (Vault)        (Terminal)   (Audit Log)
 ```
 
 | Route | Purpose | Role Gating |
